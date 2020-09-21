@@ -1,6 +1,5 @@
 <template>
 	<div class="grid" :style="gridCssVariables">
-		clicked = {{clicked}}
 		<div class="column-count-container">
 			<div 
 				class="cells-count"
@@ -13,41 +12,41 @@
 					</div>
 			</div>
 		</div>
-
-		<div class="bottom-grid">
-			<div class="row-count-container">
-				<div 
-					class="cells-count-container"
-					v-for="(row, key) in rows"
-					:key="'row-'+key">
-					<div
-						v-for="(countElem, key) in row"
-						:key="'count-elem-'+key">
-						{{countElem}}
-					</div>
-				</div>
-			</div>
-
+		
+		<div class="row-count-container">
 			<div 
-				class="cells-container"
-				:class="{ 'no-divider-width': width <= 5, 'no-divider-height': height <= 5 }"
-				:style="cellsContainerCss"
-				v-on:mouseleave="clicked = false"
-				>
-				<div 
-					class="cell"
-					v-for="(cell, key) in (width*height)"
-					:key="'cell-' + key"
-					:class="{ 'filled': cells[key] }"
-					v-on:click="toggleCell(key)"
-					v-on:mouseover="checkClickAndToggleCell(key)"
-					v-on:mousedown="clicked = true"
-					v-on:mouseup="clicked = false"
-					>
-					{{cells[key]}}
+				class="cells-count-container"
+				v-for="(row, key) in rows"
+				:key="'row-'+key">
+
+				<div
+					v-for="(countElem, key) in row"
+					:key="'count-elem-'+key">
+					{{countElem}}
 				</div>
 			</div>
 		</div>
+
+		<div 
+			class="cells-container"
+			:class="{ 'no-divider-width': width <= 5, 'no-divider-height': height <= 5 }"
+			:style="cellsContainerCss"
+			v-on:mouseleave="clicked = false"
+			>
+			<div 
+				class="cell"
+				v-for="(cell, key) in (width*height)"
+				:key="'cell-' + key"
+				:class="{ 'filled': cells[key] }"
+				v-on:click="toggleCell(key)"
+				v-on:mouseover="checkClickAndToggleCell(key)"
+				v-on:mousedown="clicked = true"
+				v-on:mouseup="clicked = false"
+				>
+				{{cells[key]}}
+			</div>
+		</div>
+
 	</div>
 </template>
 
@@ -131,10 +130,11 @@ export default {
 				count = 0
 
 				for (let y = 0; y < this.height; y++) {
-					cellIndex = (y * this.height) + x
+					cellIndex = (y * this.width) + x
 					cell = this.cells[cellIndex];
+					console.log(cellIndex)
 
-					console.log(cell)
+					// console.log(cell)
 
 					if(cell){
 						count++;
@@ -159,7 +159,8 @@ export default {
 		},
 		gridCssVariables: function(){
 			return {
-				'--grid-cellsize': this.cellSizeInPx
+				'--grid-cellsize': this.cellSizeInPx,
+				'width': this.cellSize * this.width + 'px',
 			}
 		},
 		cellsContainerCss: function(){
@@ -178,60 +179,82 @@ export default {
 <style lang="scss" scoped>
 
 	.grid{
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
+		position: relative;
+		margin-left: 50rem;
+		margin-top: 20rem;
+		font-family: 'pixel';
+		font-size: var(--grid-cellsize);
 
 		.column-count-container{
+			position: absolute;
+			height: 150px;
+			top: -150px;
+			left: 0;
+
+
 			display: flex;
-			justify-content: end;
-			align-items: end;
+			flex-direction: row;
+			justify-content: flex-start;
+
+			align-items: stretch;
 
 			.cells-count{
-				border-right: solid black 2px;
+				background-color: rgb(184, 175, 175);
+				// border: solid black 2px;
 				width: var(--grid-cellsize);
 				box-sizing: border-box;
-			}
-		}
-
-
-		.bottom-grid{
-			display: flex;
-			justify-content: flex-end;
-			align-items: flex-start;
-			.row-count-container{
 				display: flex;
-				justify-content: start;
-				align-items: end;
 				flex-direction: column;
+				justify-content: flex-end;
+				align-items: center;
+			}
 
-				.cells-count-container{
-					border-top: solid black 2px;
-					height: var(--grid-cellsize);
-					min-width: var(--grid-cellsize);
-					box-sizing: border-box;
-					display: flex;
-					flex-direction: row;
-					justify-content: end;
-					align-items: center;
-					padding-right: calc(var(--grid-cellsize)/4);
-				}
+			.cells-count:nth-child(5n){
+				border-right: solid black 4px;
 			}
 		}
 
+		.grid-bottom{
+			position: relative;
+		}
+
+		.row-count-container{
+			position: absolute;
+			width: 150px;
+			left: -150px; top: 0;
+			display: flex;
+			justify-content: flex-start;
+			align-items: stretch;
+			flex-direction: column;
+
+			.cells-count-container{
+				background-color: rgb(184, 175, 175);
+				// border: solid black 2px;
+				height: var(--grid-cellsize);
+				min-width: var(--grid-cellsize);
+				box-sizing: border-box;
+				display: flex;
+				flex-direction: row;
+				justify-content: flex-end;
+				align-items: center;
+				padding-right: calc(var(--grid-cellsize)/4);
+			}
+		}
+		
 		.cells-container{
-			border-top: solid black 2px;
-			border-left: solid black 2px;
+			// border-top: solid black 2px;
+			// border-left: solid black 2px;
 
 			.cell{  
 				cursor: pointer;
 				display: inline-block;	
 				width: var(--grid-cellsize);
 				height: var(--grid-cellsize);
-				border-right: solid black 2px;
-				border-bottom: solid black 2px;
+				// border: solid black 2px;
+				background-color: rgb(184, 175, 175);
 				box-sizing: border-box;
 				color: rgba($color: #000000, $alpha: 0);
+
 				-webkit-user-select: none; /* Safari */        
 				-moz-user-select: none; /* Firefox */
 				-ms-user-select: none; /* IE10+/Edge */
