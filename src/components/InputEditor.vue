@@ -8,6 +8,7 @@
 				{{value}}
 		</component>
 
+
 		<!-- <component 
 			v-bind:is="inputType" 
 			v-if="displayInput"
@@ -15,9 +16,11 @@
 		</component> -->
 		<div class="input-container" v-if="displayInput">
 			<input 
-				v-model="tempValue" 
+				v-model="tempValue"  
 				placeholder="modifiez-moi" 
-				v-if="inputType == 'text'">
+				v-if="inputType != 'textarea' "
+				:type="inputType"
+				ref="textInput">
 
 			<textarea 
 				name="" 
@@ -26,7 +29,8 @@
 				rows="10"
 				v-model="tempValue" 
 				placeholder="modifiez-moi" 
-				v-if="inputType == 'textarea'"></textarea>
+				v-if="inputType == 'textarea'"
+				ref="textareaInput"></textarea>
 				
 			<button v-on:click="updateValue">Valider</button>
 		</div>
@@ -51,11 +55,28 @@ export default {
 			type: String,
 			default: "p",
 		},
-		value: String,
+		value:{},
 	},
 	methods: {
 		toggleInput: function(){
 			this.displayInput = !this.displayInput;
+			if(this.displayInput){
+				this.$nextTick(()=>{
+					switch (this.inputType) {
+						case 'text':
+							console.log(this.$refs)
+							console.log(this.$refs.textInput)
+							this.$refs.textInput.focus();
+							break;
+						case 'textarea':
+							this.$refs.textareaInput.focus();
+							break;
+					
+						default:
+							break;
+					}
+				})
+			}
 		},
 		updateValue: function(){
 			this.$emit('update-value', this.tempValue)
@@ -75,12 +96,15 @@ export default {
 	
 	.input-editor{
 		text-align: left;
-		padding: var(--cell-size);
 		margin: var(--cell-size);
 		margin-left: 0; padding-left: 0;
 
+
 		.input-container{
-			margin: var(--cell-size);
+			display: flex;
+			justify-content: flex-start;
+			align-items: flex-end;
+
 			text-align: left;
 			margin-left: 0; padding-left: 0;
 
@@ -90,20 +114,57 @@ export default {
 				outline-color: rgba($color: #000000, $alpha: 0);
 
 				border: solid var(--cell-size) black;
-				height: calc(var(--cell-size) * 5);
+				height: calc(var(--cell-size) * 9);
 				// padding: var(--cell-size);
 				padding-left: calc(var(--cell-size) - 1px);
 				line-height: 0;
-				font-size: calc(var(--cell-size)*8);
-				line-height: calc(var(--cell-size)*4);
+
+				font-size: calc(var(--cell-size)*10);
+				line-height: calc(var(--cell-size)*5);  
+
+				min-width: 200px;
+				width: 65%;
+				// width: 100%;
+				box-sizing: border-box;
 				
 			}
 
+			button{
+				font-family: 'pixel';
+				padding-bottom: var(--cell-size);
+				border: none;
+				font-size: calc(var(--cell-size)*10);
+				line-height: calc(var(--cell-size)*5);
+				border-bottom: solid black var(--cell-size);
+				background: none;
+				margin-left: var(--cell-size);
+			}
 		}
 
 		.input-value{
-			font-size: calc(var(--cell-size)*8);
-			line-height: calc(var(--cell-size)*4);
+			font-size: calc(var(--cell-size)*10);
+			line-height: calc(var(--cell-size)*5);
+		}
+	}
+
+	.sm{
+
+		.input-container{
+			input{
+				font-size: calc(var(--cell-size)*4);
+				line-height: calc(var(--cell-size)*2);
+				height: calc(var(--cell-size) * 5);
+			}
+
+			button{
+				font-size: calc(var(--cell-size)*4);
+				line-height: calc(var(--cell-size)*2);
+			}
+		}
+
+		.input-value{
+			font-size: calc(var(--cell-size)*4);
+			line-height: calc(var(--cell-size)*2);
 		}
 	}
 

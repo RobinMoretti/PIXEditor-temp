@@ -13,6 +13,7 @@
     "sass-loader": "^10.0.2",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
+    "vue-units": "^1.0.4",
     "vuex": "^3.4.0",
     "vuex-persistedstate": "^3.1.0"
   },
@@ -41,7 +42,9 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {}
+    "rules": {
+      "vue/no-unused-components": "warn"
+    }
   },
   "browserslist": [
     "> 1%",

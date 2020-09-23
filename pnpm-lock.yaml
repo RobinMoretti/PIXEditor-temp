@@ -4,6 +4,7 @@ dependencies:
   sass-loader: 10.0.2_node-sass@4.14.1
   vue: 2.6.12
   vue-router: 3.4.3
+  vue-units: 1.0.4_vue@2.6.12
   vuex: 3.5.1_vue@2.6.12
   vuex-persistedstate: 3.1.0_vue@2.6.12+vuex@3.5.1
 devDependencies:
@@ -2842,6 +2843,13 @@ packages:
     dev: true
     resolution:
       integrity: sha512-4FJkXzKXEDB1snCFZlLP4gpC3JILicCpGbzG9f9G7tGqGCzETQ2hWPrcinA9oU4wtf2biUaEH5065UnMeR33oA==
+  /convert-units/2.3.4:
+    dependencies:
+      lodash.foreach: 2.3.0
+      lodash.keys: 2.3.0
+    dev: false
+    resolution:
+      integrity: sha512-ERHfdA0UhHJp1IpwE6PnFJx8LqG7B1ZjJ20UvVCmopEnVCfER68Tbe3kvN63dLbYXDA2xFWRE6zd4Wsf0w7POg==
   /cookie-signature/1.0.6:
     dev: true
     resolution:
@@ -5588,14 +5596,126 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-t7hw9pI+WvuwNJXwk5zVHpyhIqzg2qTlklJOf0mVxGSbe3Fp2VieZcduNYjaLDoy6p9uGpQEGWG87WpMKlNq8g==
+  /lodash._basebind/2.3.0:
+    dependencies:
+      lodash._basecreate: 2.3.0
+      lodash._setbinddata: 2.3.0
+      lodash.isobject: 2.3.0
+    dev: false
+    resolution:
+      integrity: sha1-K1vEUqDhBhQ7IYafIzvbWHQX0kg=
+  /lodash._basecreate/2.3.0:
+    dependencies:
+      lodash._renative: 2.3.0
+      lodash.isobject: 2.3.0
+      lodash.noop: 2.3.0
+    dev: false
+    resolution:
+      integrity: sha1-m4ioak3P97fzxh2Dovz8BnHsneA=
+  /lodash._basecreatecallback/2.3.0:
+    dependencies:
+      lodash._setbinddata: 2.3.0
+      lodash.bind: 2.3.0
+      lodash.identity: 2.3.0
+      lodash.support: 2.3.0
+    dev: false
+    resolution:
+      integrity: sha1-N7KrF1kaM56YjbMln81GAZ16w2I=
+  /lodash._basecreatewrapper/2.3.0:
+    dependencies:
+      lodash._basecreate: 2.3.0
+      lodash._setbinddata: 2.3.0
+      lodash._slice: 2.3.0
+      lodash.isobject: 2.3.0
+    dev: false
+    resolution:
+      integrity: sha1-qgxhrZYETDkzN2ExSDqXWcNlEkc=
+  /lodash._createwrapper/2.3.0:
+    dependencies:
+      lodash._basebind: 2.3.0
+      lodash._basecreatewrapper: 2.3.0
+      lodash.isfunction: 2.3.0
+    dev: false
+    resolution:
+      integrity: sha1-0arhEC2t9EDo4G/BM6bt1/4UYHU=
+  /lodash._objecttypes/2.3.0:
+    dev: false
+    resolution:
+      integrity: sha1-aj6jmH3W7rgCGy1cnDA1Scwrrh4=
+  /lodash._renative/2.3.0:
+    dev: false
+    resolution:
+      integrity: sha1-d9jt1M7SbdWXH54Vpfdy5OMX+9M=
+  /lodash._setbinddata/2.3.0:
+    dependencies:
+      lodash._renative: 2.3.0
+      lodash.noop: 2.3.0
+    dev: false
+    resolution:
+      integrity: sha1-5WEEkKzRMnfVmFjZW18nJ/FQjwQ=
+  /lodash._shimkeys/2.3.0:
+    dependencies:
+      lodash._objecttypes: 2.3.0
+    dev: false
+    resolution:
+      integrity: sha1-YR+TFJ4+bHIQlrSHae8pU3rai6k=
+  /lodash._slice/2.3.0:
+    dev: false
+    resolution:
+      integrity: sha1-FHGYEyhZly5GgMoppZkshVZpqlw=
+  /lodash.bind/2.3.0:
+    dependencies:
+      lodash._createwrapper: 2.3.0
+      lodash._renative: 2.3.0
+      lodash._slice: 2.3.0
+    dev: false
+    resolution:
+      integrity: sha1-wqjhi2jl7MFS4rFoJmEW/qWwFsw=
   /lodash.defaultsdeep/4.6.1:
     dev: true
     resolution:
       integrity: sha512-3j8wdDzYuWO3lM3Reg03MuQR957t287Rpcxp1njpEa8oDrikb+FwGdW3n+FELh/A6qib6yPit0j/pv9G/yeAqA==
+  /lodash.foreach/2.3.0:
+    dependencies:
+      lodash._basecreatecallback: 2.3.0
+      lodash.forown: 2.3.0
+    dev: false
+    resolution:
+      integrity: sha1-CDQEyR6EbudyRf3512UZxosq8Wg=
+  /lodash.forown/2.3.0:
+    dependencies:
+      lodash._basecreatecallback: 2.3.0
+      lodash._objecttypes: 2.3.0
+      lodash.keys: 2.3.0
+    dev: false
+    resolution:
+      integrity: sha1-JPtKr4ANRfwtxgv+w84EyDajrX8=
+  /lodash.identity/2.3.0:
+    dev: false
+    resolution:
+      integrity: sha1-awGiEMlIU1XCqRO0i2cRIZoXPe0=
+  /lodash.isfunction/2.3.0:
+    dev: false
+    resolution:
+      integrity: sha1-aylz5HpkfPEucNZ2rqE2Q3BuUmc=
+  /lodash.isobject/2.3.0:
+    dependencies:
+      lodash._objecttypes: 2.3.0
+    dev: false
+    resolution:
+      integrity: sha1-LhbT/Fg9qYMZaJU/LY5tc0NPZ5k=
   /lodash.kebabcase/4.1.1:
     dev: true
     resolution:
       integrity: sha1-hImxyw0p/4gZXM7KRI/21swpXDY=
+  /lodash.keys/2.3.0:
+    dependencies:
+      lodash._renative: 2.3.0
+      lodash._shimkeys: 2.3.0
+      lodash.isobject: 2.3.0
+    dev: false
+    resolution:
+      integrity: sha1-s1D0+Syqn0WkouzwGEVM8vKK4lM=
   /lodash.mapvalues/4.6.0:
     dev: true
     resolution:
@@ -5604,6 +5724,16 @@ packages:
     dev: true
     resolution:
       integrity: sha1-vMbEmkKihA7Zl/Mj6tpezRguC/4=
+  /lodash.noop/2.3.0:
+    dev: false
+    resolution:
+      integrity: sha1-MFnWKNUbv5N80qC2/Dp/ISpmnCw=
+  /lodash.support/2.3.0:
+    dependencies:
+      lodash._renative: 2.3.0
+    dev: false
+    resolution:
+      integrity: sha1-fq8DivTw1qq3drRKptz8gDNMm/0=
   /lodash.transform/4.6.0:
     dev: true
     resolution:
@@ -8965,6 +9095,15 @@ packages:
     dev: true
     resolution:
       integrity: sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==
+  /vue-units/1.0.4_vue@2.6.12:
+    dependencies:
+      convert-units: 2.3.4
+      vue: 2.6.12
+    dev: false
+    peerDependencies:
+      vue: '>=1.x.x'
+    resolution:
+      integrity: sha1-H2afFWR/Uh155WVWp5fd0WuWzDo=
   /vue/2.6.12:
     dev: false
     resolution:
@@ -9367,5 +9506,6 @@ specifiers:
   vue-cli-plugin-style-resources-loader: ~0.1.4
   vue-router: ^3.2.0
   vue-template-compiler: ^2.6.11
+  vue-units: ^1.0.4
   vuex: ^3.4.0
   vuex-persistedstate: ^3.1.0

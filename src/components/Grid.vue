@@ -46,7 +46,6 @@
 				{{cells[key]}}
 			</div>
 		</div>
-
 	</div>
 </template>
 
@@ -55,36 +54,21 @@
 export default {
 	data () {
 		return {
-			cells:[
-				1,0,0,0,0,1,0,0,0,0,
-				1,0,0,0,0,1,0,0,0,0,
-				1,0,0,0,0,1,0,0,0,0,
-				1,0,0,0,0,1,0,0,0,0,
-				1,0,0,0,0,1,0,0,0,0,
-				1,0,0,0,0,1,0,0,0,0,
-				1,0,0,0,0,1,0,0,0,0,
-			],
 			columns: [],
 			rows: [],
 			clicked: false
 		}
 	},
 	props: {
-		cellSize: {
-			type: Number,
-			default: 16,
+		grid: {
+			type: Object,
+			required: true,
 		},
-		width:{
-			type: Number,
-			default: 10,
-		},
-		height:{
-			type: Number,
-			default: 10,
-		}
 	},
 	methods: {
 		toggleCell: function(key){
+			console.log("toggle",key)
+			// this.$store.commit("book/toggleGridCell",)
 			this.cells[key] == 0 ? this.$set(this.cells, key, 1) : this.$set(this.cells, key, 0);
 			this.updateRowsAndColumnsCount();			
 		},
@@ -132,9 +116,6 @@ export default {
 				for (let y = 0; y < this.height; y++) {
 					cellIndex = (y * this.width) + x
 					cell = this.cells[cellIndex];
-					console.log(cellIndex)
-
-					// console.log(cell)
 
 					if(cell){
 						count++;
@@ -154,21 +135,35 @@ export default {
 		}
 	},
 	computed: {
-		cellSizeInPx: function(){
-			return this.cellSize + "px";
+		cellSizeInCm: function(){
+			return this.cellSize + "cm";
 		},
 		gridCssVariables: function(){
 			return {
-				'--grid-cellsize': this.cellSizeInPx,
-				'width': this.cellSize * this.width + 'px',
+				'--grid-cellsize': this.cellSizeInCm,
+				'width': this.cellSize * this.width + 'cm',
 			}
 		},
 		cellsContainerCss: function(){
 			return {
-				'width': (this.cellSize * this.width) + "px",
-				'height': (this.cellSize * this.height) + "px",
+				'width': (this.cellSize * this.width + 0.01) + "cm",
+				'height': (this.cellSize * this.height + 0.01) + "cm",
 			}
+		},
+		cells: function(){
+			return this.grid.cells;
+		},
+		cellSize: function(){
+			return this.$store.getters.['book/selectedPageObj'].cellSize;
+		},
+		width: function(){
+			return this.grid.width;
+		},
+		height: function(){
+			return this.grid.height;
 		}
+	},
+	created: function(){
 	},
 	mounted () {
 		this.updateRowsAndColumnsCount();
@@ -180,10 +175,11 @@ export default {
 
 	.grid{
 		position: relative;
-		margin-left: 50rem;
-		margin-top: 20rem;
+		margin-left: 200px;
+		margin-top: 200px;
 		font-family: 'pixel';
 		font-size: var(--grid-cellsize);
+
 
 		.column-count-container{
 			position: absolute;
@@ -262,7 +258,7 @@ export default {
 			}
 			
 			.cell:nth-child(5n){
-				border-right: 4px solid black;
+				// border-right: 4px solid black;
 			}
 			.filled{
 				background: black;

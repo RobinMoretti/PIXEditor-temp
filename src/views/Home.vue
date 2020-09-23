@@ -12,38 +12,40 @@
 		</header>
 
 		<div class="pages-container">
+			<h4>Pages:</h4>
+
 			<PageSelectorBadge
 				v-for="(page, key) in pages"
 				:page="page"
+				:id="key"
 				:key="'page-'+key"
-			></PageSelectorBadge>
-			<button>
+			>
+			{{key}}
+			</PageSelectorBadge>
+
+			<p
+				class="plus"
+				v-on:click="addNewPage">
 				+
-			</button>
+			</p>
 		</div>
+		<!-- <p>{{pages.length}} prout</p> -->
+		<PageEditor></PageEditor>
 
-		<Grid 
-			:cell-size="25"
-			:width="10"
-			:height="7">
-
-		</Grid>
 
 	</div>
 </template>
 
 <script>
 
-import InputEditor from '../components/InputEditor.vue'
 import PageSelectorBadge from '../components/PageSelectorBadge.vue'
-import Grid from '../components/Grid.vue'
+import PageEditor from '../components/PageEditor.vue'
 
 export default {
 	name: 'Home',
 	components: {
-		InputEditor,
 		PageSelectorBadge,
-		Grid
+		PageEditor
 	},
 	computed: {
 		bookTitle: function(){
@@ -56,6 +58,10 @@ export default {
 	methods: {
 		updateBookTitle: function(value){
 			this.$store.commit('book/updateTitle', value)
+		},
+		addNewPage: function(){
+			this.$store.commit('book/newPage')
+			this.$store.commit('book/selectPage', this.$store.state.book.pages.length - 1)
 		}
 	},
 }
@@ -75,6 +81,26 @@ export default {
 			text-align:left;
 			font-size: calc(var(--cell-size)*10);
 			line-height: calc(var(--cell-size)*5);
+		}
+	}
+
+	.pages-container{
+		display: flex;
+		justify-content: flex-start;
+		align-items: flex-start;
+
+		h4{
+			font-size: calc(var(--cell-size)*10);
+			line-height: calc(var(--cell-size)*5);
+		}
+		.plus{
+			cursor: pointer;
+			display: inline;
+			// font-family: 'pixel';
+			font-size: calc(var(--cell-size)*10);
+			line-height: calc(var(--cell-size)*5);
+			margin-bottom: var(--cell-size);
+			padding-bottom: var(--cell-size);
 		}
 	}
 
