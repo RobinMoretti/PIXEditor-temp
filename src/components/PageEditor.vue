@@ -19,7 +19,6 @@
 
 		<div class="panel">
 			<PageSetting  v-if="selectedPage"></PageSetting>
-
 			<LayerEditor  v-if="selectedPage && selectedPageHaveEditableLayer"></LayerEditor>
 		</div>
 	</div>
@@ -55,7 +54,10 @@ export default {
 			return book.pages;
 		},
 		cellSize: function(){
-			return this.$store.getters['book/selectedPageObj'].cellSize
+			if(this.$store.getters['book/selectedPageObj'])
+				return this.$store.getters['book/selectedPageObj'].cellSize
+			else
+				return 8
 		},
 		bgGridCssVariables: function(){
 			return {

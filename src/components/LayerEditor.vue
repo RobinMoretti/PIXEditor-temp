@@ -2,15 +2,32 @@
 	<div class="layer-editor">
 		<h3><i v-if="layerIndex != 'background'">Grid</i> {{layerIndex}}</h3>
 
-		<div class="input-group">
-			Background color
+		<div class="input-group options-conainter">
 
 			<div class="option">
+				<label> Background color </label>
+			</div>
 
-				<ColorPicker
+
+			<div class="option">
+				<label> Border: </label>
+				<ImgToggler
+					image-src1="/images/check.png"
+					image-src2="/images/checked.png"
+					:value="layer.border.visible"
+					v-on:toggled="toggleBorder"
+					:image-width="3"></ImgToggler>
+
+				<ColorPickerToggler
+					:color="layer.border.color"
+					v-on:colorPicked="updateBorderColor($event)"></ColorPickerToggler>
+			</div>
+
+			<div class="option">
+				<label> background color: </label>
+				<ColorPickerToggler
 					:color="layer.backgroundColor"
-					:onEndChange="color => onBgChange(color)"
-				/>
+					v-on:colorPicked="updateBackgroundColor($event)"></ColorPickerToggler>
 			</div>
 		</div>
 		
@@ -19,18 +36,13 @@
 
 <script>
 
-import { ColorPicker } from 'vue-color-gradient-picker';
-
 export default {
-	components: {
-		ColorPicker
-	},
 	computed: {
 		layer:function(){
-			return this.$store.getters['book/activeLayer']
+			return this.$store.getters['layer/activeLayer']
 		},
 		layerIndex:function(){
-			return this.$store.getters['book/activeLayerIndex']
+			return this.$store.getters['layer/activeLayerIndex']
 		},
 		grids: function(){
 			return this.selectedPage.grids.filter( grid => {
@@ -51,9 +63,15 @@ export default {
 		},
 	},
 	methods: {
-		onBgChange(color) {
-			this.$store.commit('book/updateLayerColor', { layerIndex: this.layerIndex, color: { ...color }})
-		}
+		updateBackgroundColor(color) {
+			this.$store.dispatch('layer/changeLayerBackgroundColor', { color: { ...color }})
+		},
+		toggleBorder: function(){
+			this.$store.dispatch('layer/toggleLayerBorderVisible', { layerIndex: this.layerIndex })
+		},
+		updateBorderColor: function(color){
+			this.$store.dispatch('layer/updateLayerBorderColor', { color: color })
+		},
 	},
 	data () {
 		return {
@@ -106,8 +124,14 @@ export default {
 			text-align: left;
 		}
 
+		.options-conainter{
+			.option{
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-bottom: var(--cell-size);
+			}
+		}
+
 	}
 </style>
-
-
-<style src="vue-color-gradient-picker/dist/index.css" lang="css" />

@@ -31,7 +31,17 @@ const state = {
 			green: 255,
 			blue: 255,
 			alpha: 1
+		},
+		border: {
+			visible: false,
+			color: {
+				red: 255,
+				green: 255,
+				blue: 255,
+				alpha: 1
+			},
 		}
+
 	}
 }
 
@@ -67,6 +77,10 @@ const getters = {
 		}
 	},
 	selectedPageHaveEditableLayer: function(state){
+		if(!state.pages[state.selectedPage]){
+			return false;
+		}
+
 		var selectedPage = state.pages[state.selectedPage];
 		
 		for (let index = 0; index < selectedPage.grids.length; index++) {
@@ -94,15 +108,6 @@ const actions = {
 
 // mutations
 const mutations = {
-	updateLayerColor:  function(state, payload){
-		var selectedPage = state.pages[state.selectedPage];
-		if(payload.layerIndex != 'background'){
-			selectedPage.grids[payload.layerIndex].backgroundColor = payload.color
-		}
-		else{
-			selectedPage.background.backgroundColor = payload.color
-		}
-	},
 	deleteGridOnSelectedPage: function(state, gridId){
 		var selectedPage = state.pages[state.selectedPage];
 		selectedPage.grids.splice(gridId, 1);
@@ -156,6 +161,15 @@ const mutations = {
 					green: 255,
 					blue: 255,
 					alpha: 1
+				},
+				border: {
+					visible: false,
+					color: {
+						red: 255,
+						green: 255,
+						blue: 255,
+						alpha: 1
+					},
 				}
 			},
 			cellSize: 1,
@@ -199,6 +213,7 @@ const mutations = {
 		grid.visibility = !grid.visibility;
 	},
 	toggleGridEditable: function(state, gridId){
+		console.log("gridId", gridId)
 		var grid = state.pages[state.selectedPage].grids[gridId];
 		grid.editable = !grid.editable;
 		console.log(grid.editable )

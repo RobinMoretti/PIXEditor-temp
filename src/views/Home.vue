@@ -29,7 +29,7 @@
 				+
 			</p>
 		</div>
-		<!-- <p>{{pages.length}} prout</p> -->
+		
 		<PageEditor></PageEditor>
 
 

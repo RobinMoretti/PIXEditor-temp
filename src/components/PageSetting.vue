@@ -150,6 +150,7 @@ export default {
 		toggleGridEditable: function (gridId) {
 			if(!this.grids[gridId].editable)
 				this.$store.commit('book/disableAllEditable')
+				
 			this.$store.commit('book/toggleGridEditable', gridId)
 		},
 		deleteSelectedPage: function () {

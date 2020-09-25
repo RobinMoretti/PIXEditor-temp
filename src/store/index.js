@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import book from './modules/book'
+import layer from './modules/layer'
 
 // import EventBus from './event-bus';
 
@@ -14,6 +15,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
 	modules: {
 		book,
+		layer
 	},
 	strict: debug,
 	state:{
