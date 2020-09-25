@@ -1,10 +1,12 @@
 // import Vue from 'vue'
+import store from './../../store'
+
 // import router from '../../router'
 
 // initial state
 const state = {
 	title: "My book",
-	width: 210,
+	width: 21.0,
 	height: 29.7,
 	selectedPage: 0,
 	pages: [
@@ -44,8 +46,7 @@ const mutations = {
 			y: 5
 		}
 
-		grid.width = 10
-		grid.height = 10
+		grid.width = 10; grid.height = 10;
 		grid.grabbing = false
 		grid.cells = []
 		
@@ -63,7 +64,6 @@ const mutations = {
 				grid
 			]
 		}
-
 
 		var backgroundGridLength = (state.width * state.height) / page.cellSize;
 
@@ -95,12 +95,16 @@ const mutations = {
 	updateBgGrid: function(state){
 		var selectedPage = state.pages[state.selectedPage];
 
-		var backgroundGridLength = (state.width * state.height) / selectedPage.cellSize;
+		//snap width and height to page cell size
+		var backgroundGridLength = Math.ceil((snapTo(state.width) * snapTo(state.height)) / (selectedPage.cellSize * selectedPage.cellSize))
+
 		var count = 0;
 
 		if(selectedPage.backgroundGrid.length > backgroundGridLength){
 			count = selectedPage.backgroundGrid.length - backgroundGridLength;
 			count = selectedPage.backgroundGrid.length - count;
+
+			console.log(count)
 
 			for (let index = 0; index < count; index++) {
 				selectedPage.backgroundGrid.pop();	
@@ -109,6 +113,7 @@ const mutations = {
 		else if(selectedPage.backgroundGrid.length < backgroundGridLength){
 			count = backgroundGridLength - selectedPage.backgroundGrid.length;
 
+			console.log(count)
 			for (let index = 0; index < count; index++) {
 				selectedPage.backgroundGrid.push(0);	
 			}
@@ -145,9 +150,10 @@ const mutations = {
 		var mousePosY = (payload.mousePos.y * 0.026458333)
 		
 		var newPos = {
-			x: Math.ceil((mousePosX - initPosX) / selectedPage.cellSize ) * selectedPage.cellSize,  
-			y: Math.ceil((mousePosY - initPosY) / selectedPage.cellSize ) * selectedPage.cellSize
+			x: snapTo((mousePosX - initPosX)),  
+			y: snapTo((mousePosY - initPosY))
 		}
+
 		if(state.tempDragPos.x != newPos.x || state.tempDragPos.y != newPos.y){
 			state.tempDragPos.x = newPos.x;  
 			state.tempDragPos.y = newPos.y; 
@@ -165,4 +171,10 @@ export default {
 	getters,
 	actions,
 	mutations
+}
+
+
+function snapTo(value){
+	var snapStep = store.getters['book/selectedPageObj'].cellSize
+	return Math.ceil(value / snapStep ) * snapStep
 }
