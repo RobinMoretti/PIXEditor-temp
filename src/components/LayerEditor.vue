@@ -3,7 +3,15 @@
 		<h3><i v-if="layerIndex != 'background'">Grid</i> {{layerIndex}}</h3>
 
 		<div class="input-group">
-			background
+			Background color
+
+			<div class="option">
+
+				<ColorPicker
+					:color="layer.backgroundColor"
+					:onEndChange="color => onBgChange(color)"
+				/>
+			</div>
 		</div>
 		
 	</div>
@@ -11,8 +19,11 @@
 
 <script>
 
+import { ColorPicker } from 'vue-color-gradient-picker';
+
 export default {
 	components: {
+		ColorPicker
 	},
 	computed: {
 		layer:function(){
@@ -40,6 +51,9 @@ export default {
 		},
 	},
 	methods: {
+		onBgChange(color) {
+			this.$store.commit('book/updateLayerColor', { layerIndex: this.layerIndex, color: { ...color }})
+		}
 	},
 	data () {
 		return {
@@ -94,3 +108,6 @@ export default {
 
 	}
 </style>
+
+
+<style src="vue-color-gradient-picker/dist/index.css" lang="css" />

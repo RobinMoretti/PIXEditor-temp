@@ -26,6 +26,12 @@ const state = {
 		editable: false,
 		cells: [],
 		visibility: true,
+		backgroundColor: {
+			red: 255,
+			green: 255,
+			blue: 255,
+			alpha: 1
+		}
 	}
 }
 
@@ -88,6 +94,15 @@ const actions = {
 
 // mutations
 const mutations = {
+	updateLayerColor:  function(state, payload){
+		var selectedPage = state.pages[state.selectedPage];
+		if(payload.layerIndex != 'background'){
+			selectedPage.grids[payload.layerIndex].backgroundColor = payload.color
+		}
+		else{
+			selectedPage.background.backgroundColor = payload.color
+		}
+	},
 	deleteGridOnSelectedPage: function(state, gridId){
 		var selectedPage = state.pages[state.selectedPage];
 		selectedPage.grids.splice(gridId, 1);
@@ -136,6 +151,12 @@ const mutations = {
 				grid:[],
 				visible: false,
 				editable: false,
+				backgroundColor: {
+					red: 255,
+					green: 255,
+					blue: 255,
+					alpha: 1
+				}
 			},
 			cellSize: 1,
 			grids: [

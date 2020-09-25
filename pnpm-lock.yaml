@@ -3,6 +3,7 @@ dependencies:
   node-sass: 4.14.1
   sass-loader: 10.0.2_node-sass@4.14.1
   vue: 2.6.12
+  vue-color-gradient-picker: 0.1.2_core-js@3.6.5+vue@2.6.12
   vue-router: 3.4.3
   vue-units: 1.0.4_vue@2.6.12
   vuex: 3.5.1_vue@2.6.12
@@ -9017,6 +9018,17 @@ packages:
     dev: true
     resolution:
       integrity: sha512-aK2TyVThZO6oVPZJpCckha8ALcg1RXKYLNqtuy1fNv+24x6zGWKpSK+FHAo47B7yeRlFS9DbKo+cvUFMqWaZ7Q==
+  /vue-color-gradient-picker/0.1.2_core-js@3.6.5+vue@2.6.12:
+    dependencies:
+      core-js: 3.6.5
+      vue: 2.6.12
+      vue-fragment: 1.5.1_vue@2.6.12
+    dev: false
+    peerDependencies:
+      core-js: ^3.6.4
+      vue: ^2.6.11
+    resolution:
+      integrity: sha512-aAHBSCNtSbMKLJhthrJLSATYaTKomgukcs69pKcyR/+6aN5RONLn2pEKqpLArO7uZZeoZvCoxP1LzC3s/82OuQ==
   /vue-eslint-parser/7.1.0_eslint@6.8.0:
     dependencies:
       debug: 4.2.0
@@ -9033,6 +9045,14 @@ packages:
       eslint: '>=5.0.0'
     resolution:
       integrity: sha512-Kr21uPfthDc63nDl27AGQEhtt9VrZ9nkYk/NTftJ2ws9XiJwzJJCnCr3AITQ2jpRMA0XPGDECxYH8E027qMK9Q==
+  /vue-fragment/1.5.1_vue@2.6.12:
+    dependencies:
+      vue: 2.6.12
+    dev: false
+    peerDependencies:
+      vue: ^2.5.16
+    resolution:
+      integrity: sha512-ig6eES6TcMBbANW71ylB+AJgRN+Zksb3f50AxjGpAk6hMzqmeuD80qeh4LJP0jVw2dMBMjgRUfIkrvxygoRgtQ==
   /vue-hot-reload-api/2.3.4:
     dev: true
     resolution:
@@ -9504,6 +9524,7 @@ specifiers:
   style-resources-loader: ^1.3.2
   vue: ^2.6.11
   vue-cli-plugin-style-resources-loader: ~0.1.4
+  vue-color-gradient-picker: ^0.1.2
   vue-router: ^3.2.0
   vue-template-compiler: ^2.6.11
   vue-units: ^1.0.4

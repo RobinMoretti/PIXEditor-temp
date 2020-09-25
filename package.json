@@ -12,6 +12,7 @@
     "node-sass": "^4.14.1",
     "sass-loader": "^10.0.2",
     "vue": "^2.6.11",
+    "vue-color-gradient-picker": "^0.1.2",
     "vue-router": "^3.2.0",
     "vue-units": "^1.0.4",
     "vuex": "^3.4.0",

@@ -178,6 +178,7 @@ export default {
 				'--grid-cellsize': this.cellSizeInCm,
 				'--grid-left': (this.grid.position.x) + 'cm',
 				'--grid-top': (this.grid.position.y) + 'cm',
+				'--grid-bg-color': this.grid.backgroundColor.style,
 				'width': this.cellSize * this.width + 'cm',
 			}
 		},
@@ -300,6 +301,7 @@ export default {
 		}
 		
 		.cells-container{
+			background: var(--grid-bg-color);
 			display: flex;
 			flex-wrap: wrap;
 			// border-top: solid black 2px;
@@ -311,7 +313,7 @@ export default {
 				width: var(--grid-cellsize);
 				height: var(--grid-cellsize);
 				// border: solid black 2px;
-				background-color: rgb(184, 175, 175);
+				// background-color: rgb(184, 175, 175);
 				box-sizing: border-box;
 				color: rgba($color: #000000, $alpha: 0);
 
