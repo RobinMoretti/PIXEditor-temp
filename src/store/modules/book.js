@@ -34,6 +34,46 @@ const getters = {
 	selectedPageObj: function(state){
 		return state.pages[state.selectedPage];
 	},
+	activeLayer: function(state){
+		var selectedPage = state.pages[state.selectedPage];
+		
+		for (let index = 0; index < selectedPage.grids.length; index++) {
+			if(selectedPage.grids[index].editable){
+				return selectedPage.grids[index]
+			}
+		}
+
+		if(selectedPage.background.editable ){
+			return selectedPage.background
+		}
+	},
+	activeLayerIndex: function(state){
+		var selectedPage = state.pages[state.selectedPage];
+		
+		for (let index = 0; index < selectedPage.grids.length; index++) {
+			if(selectedPage.grids[index].editable){
+				return index
+			}
+		}
+
+		if(selectedPage.background.editable ){
+			return 'background'
+		}
+	},
+	selectedPageHaveEditableLayer: function(state){
+		var selectedPage = state.pages[state.selectedPage];
+		
+		for (let index = 0; index < selectedPage.grids.length; index++) {
+			if(selectedPage.grids[index].editable){
+				return true
+			}
+		}
+		if(selectedPage.background.editable ){
+			return true
+		}
+
+		return false;
+	},
 }
 
 // actions
@@ -83,6 +123,7 @@ const mutations = {
 	},
 	newPage: function(state){
 		var grid = helpers.cloneVar(state.defaultGrid);
+		grid.editable = true
 
 		var cellsLenght = grid.width * grid.height;
 
