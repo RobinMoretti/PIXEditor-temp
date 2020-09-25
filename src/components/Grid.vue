@@ -1,5 +1,11 @@
 <template>
 	<div class="grid" :style="gridCssVariables">
+		<div 
+			ref="clickCtrl" 
+			class="click-ctrl" 
+			v-on:click="toggleGrabbing(gridId)"
+			v-if=" grid.grabbing">
+		</div>
 		<div class="column-count-container">
 			<div 
 				class="cells-count"
@@ -46,6 +52,16 @@
 				{{cells[key]}}
 			</div>
 		</div>
+
+		<div class="grid-options">
+			<b v-on:click=toggleGrabbing(gridId)>Grab</b>
+			<!-- <hr>
+			<h5>Debug</h5> -->
+			<p>grab: {{ grid.position }};</p>
+			<!-- <p>initGridPos: {{ initGridPos }};</p>
+			<p>tempDragPos: {{ tempDragPos }};</p> -->
+		</div>
+
 	</div>
 </template>
 
@@ -59,13 +75,27 @@ export default {
 			clicked: false
 		}
 	},
+	watch: {
+		mousePos(newValue) {
+			if(this.grid.grabbing){
+				this.$store.commit('book/updateGridPos', { grid: this.gridId, mousePos: newValue})
+			}
+		}
+	},
 	props: {
 		grid: {
 			type: Object,
 			required: true,
 		},
+		gridId: {
+			type: Number,
+			required: true,
+		}
 	},
 	methods: {
+		toggleGrabbing: function(gridIndex){
+			this.$store.dispatch('book/toggleGrabbingOnGrid', gridIndex )
+		},
 		toggleCell: function(key){
 			console.log("toggle",key)
 			// this.$store.commit("book/toggleGridCell",)
@@ -135,12 +165,20 @@ export default {
 		}
 	},
 	computed: {
+		initGridPos: function(){
+			return this.$store.state.book.initGridPos;
+		},
+		tempDragPos: function(){
+			return this.$store.state.book.tempDragPos;
+		},
 		cellSizeInCm: function(){
 			return this.cellSize + "cm";
 		},
 		gridCssVariables: function(){
 			return {
 				'--grid-cellsize': this.cellSizeInCm,
+				'--grid-left': (this.grid.position.x) + 'cm',
+				'--grid-top': (this.grid.position.y) + 'cm',
 				'width': this.cellSize * this.width + 'cm',
 			}
 		},
@@ -161,6 +199,9 @@ export default {
 		},
 		height: function(){
 			return this.grid.height;
+		},
+		mousePos: function(){
+			return this.$store.state.mousePosition;
 		}
 	},
 	created: function(){
@@ -172,21 +213,34 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+	.click-ctrl{
+		position: absolute;
+		left: 0; top: 0;
+		width: 100vw; height: 100vh;
+		// background: red;
+		// border: solid grey 1px;
+		z-index: 10;
+	}
+
+	.grid-options{
+		// position: absolute;
+		// right: -150%; top:0;
+		// text-align: left;
+	}
 
 	.grid{
 		position: relative;
-		margin-left: 200px;
-		margin-top: 200px;
+		margin-left: var(--grid-left);
+		margin-top: var(--grid-top);
+
 		font-family: 'pixel';
 		font-size: var(--grid-cellsize);
-
 
 		.column-count-container{
 			position: absolute;
 			height: 150px;
 			top: -150px;
 			left: 0;
-
 
 			display: flex;
 			flex-direction: row;

@@ -36,9 +36,23 @@
 					<button 
 						v-on:click="togglePageBgGrid">Toggle</button>	
 				</div>
+				<div class="grids-container">
+					<label for="cell-size">Grids</label>
+					<div 
+						class="grid"
+						v-for="(grid, key) in selectedPage.grids"
+						:key="'grid-ref-'+key">
+						{{ key }} - 
+						<!-- <b v-on:click=toggleGrabbing(key)>Grab</b> -->
+						
+					</div>
+				</div>
 				<div class="input-group">
 					<button 
 						v-on:click="deleteSelectedPage">DELETE PAGE</button>		
+				</div>
+				<div class="input-group">
+					<p>{{dragMousePos}} drog</p>	
 				</div>
 			</form>
 		</div>
@@ -53,6 +67,10 @@ export default {
 		Grid,
 	},
 	computed: {
+		dragMousePos: function(){
+			var book = this.$store.state.book;
+			return book.initDragPos;
+		},
 		selectedPage: function(){
 			var book = this.$store.state.book;
 			return book.pages[book.selectedPage];
@@ -87,9 +105,21 @@ export default {
 		deleteSelectedPage: function () {
 			this.$store.commit('book/deleteSelectedPage')
 		},
+		updateGridPos: function(gridIndex){
+			this.$store.dispatch('book/toggleGrabbingOnGrid', gridIndex )
+
+			if(this.selectedPage.grids[gridIndex].grabbing){
+				this.grabbingGridIndex = gridIndex;
+				this.grabbingInterval = setInterval(() => {
+					
+				}, 100);				
+			}
+		}
 	},
 	data () {
 		return {
+			grabbingGridIndex: 0,
+			grabbingInterval: null,
 		}
 	},
 	props: {
@@ -109,7 +139,7 @@ export default {
 		.page{
 			position: relative;
 			border: solid var(--cell-size) black;
-			box-sizing: border-box;
+			// box-sizing: border-box;
 			display: inline-block;
 			width: 21cm;
 			height: 29.7cm;

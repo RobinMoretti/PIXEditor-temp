@@ -3,6 +3,8 @@ import Vuex from 'vuex'
 
 import book from './modules/book'
 
+// import EventBus from './event-bus';
+
 const debug = process.env.NODE_ENV !== 'production'
 
 import createPersistedState from "vuex-persistedstate";
@@ -15,12 +17,22 @@ export default new Vuex.Store({
 	},
 	strict: debug,
 	state:{
+		mousePosition: {
+			x: 0,
+			y:0
+		},
+		displayCanvas: false,
 	},
 	actions: {
-		// init: ({ dispatch, commit })=>{
-		// },
 	},
 	mutations: {
+		updateMousePostion: function(state, position){
+			state.mousePosition = position;
+		},
 	},
 	plugins: [createPersistedState()]
 })
+
+
+
+
