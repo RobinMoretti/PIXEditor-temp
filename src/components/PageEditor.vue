@@ -82,13 +82,18 @@
 									:value="grid.editable"
 									v-on:toggled="toggleGridEditable(key)"
 									:image-width="3"></ImgToggler>
+
+								<img src="/images/delete-icon.png" v-on:click="deleteGrid(key)" alt="" :width="3*8 + 'px'" style="margin-left: 8px" >
+								
 							</div>
 						</div>
 						<div 
 							class="layer layer-ctrl">
 
 							<div class="options">
-								<div class="plus" v-on:click="addNewGrid">+</div>
+								<div class="plus" v-on:click="addNewGrid">
+									<img src="/images/add-icon.png" :width="3*8 + 'px'" style="margin-left: 8px" >
+								</div>
 							</div>
 						</div>
 					</div>
@@ -143,6 +148,9 @@ export default {
 		},
 	},
 	methods: {
+		deleteGrid: function (gridId) {
+			this.$store.commit('book/deleteGridOnSelectedPage', gridId)
+		},
 		addNewGrid: function () {
 			this.$store.commit('book/addNewGridToSelectedPage')
 		},

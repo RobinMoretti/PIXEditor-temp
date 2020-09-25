@@ -76,6 +76,7 @@ export default {
 	watch: {
 		mousePos(newValue) {
 			if(this.grid.grabbing){
+				console.log("moving", this.gridId) 
 				this.$store.commit('book/updateGridPos', { grid: this.gridId, mousePos: newValue})
 			}
 		}
@@ -96,7 +97,7 @@ export default {
 		},
 		toggleCell: function(key){
 			if(this.grid.editable){
-				this.cells[key] == 0 ? this.$set(this.cells, key, 1) : this.$set(this.cells, key, 0);
+				this.$store.commit('book/updateCellGrid', { gridId: this.gridId, cellId: key, value: 1 } )
 				this.updateRowsAndColumnsCount();	
 			}		
 		},
@@ -225,7 +226,8 @@ export default {
 		background: lemonchiffon;
 		position: absolute;
 		padding: var(--cell-size);
-		right: 0;
+		left: calc(100% + var(--cell-size));
+		top: 0;
 		// right: -150%; top:0;
 		// text-align: left;
 
@@ -235,9 +237,9 @@ export default {
 	}
 
 	.grid{
-		position: relative;
-		margin-left: var(--grid-left);
-		margin-top: var(--grid-top);
+		position: absolute;
+		left: var(--grid-left);
+		top: var(--grid-top);
 
 		font-family: 'pixel';
 		font-size: var(--grid-cellsize);

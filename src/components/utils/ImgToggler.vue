@@ -34,11 +34,5 @@ export default {
 <style lang="scss" scoped>
       .img-toggle{
             margin-left: var(--cell-size);
-            img{
-                  image-rendering: -moz-crisp-edges;
-                  image-rendering: -webkit-crisp-edges;
-                  image-rendering: pixelated;
-                  image-rendering: crisp-edges;
-            }
       }
 </style>

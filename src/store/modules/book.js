@@ -1,5 +1,6 @@
 // import Vue from 'vue'
 import store from './../../store'
+import helpers from './../../helpers'
 
 // import router from '../../router'
 
@@ -22,7 +23,7 @@ const state = {
 		width: 10,
 		height: 10,
 		grabbing: false,
-		editable: true,
+		editable: false,
 		cells: [],
 		visibility: true,
 	}
@@ -47,6 +48,22 @@ const actions = {
 
 // mutations
 const mutations = {
+	deleteGridOnSelectedPage: function(state, gridId){
+		var selectedPage = state.pages[state.selectedPage];
+		selectedPage.grids.splice(gridId, 1);
+	},
+	updateCellGrid: function(state, payload){
+		var selectedPage = state.pages[state.selectedPage];
+
+		if(payload.gridId != 'background'){
+			console.log("payload.cellsId", selectedPage.grids[payload.gridId].cells)
+			selectedPage.grids[payload.gridId].cells[payload.cellId] = payload.value
+		}
+		else{
+			//background grid
+		}
+				// this.cells[key] == 0 ? this.$set(this.cells, key, 1) : this.$set(this.cells, key, 0);
+	},
 	disableAllEditable: function(state){
 		var selectedPage = state.pages[state.selectedPage];
 
@@ -65,7 +82,7 @@ const mutations = {
 		state.title = value;
 	},
 	newPage: function(state){
-		var grid = {...state.defaultGrid};
+		var grid = helpers.cloneVar(state.defaultGrid);
 
 		var cellsLenght = grid.width * grid.height;
 
@@ -164,12 +181,12 @@ const mutations = {
 		var selectedPage = state.pages[state.selectedPage];
 		selectedPage.grids[gridIndex].grabbing = !selectedPage.grids[gridIndex].grabbing;
 		if(selectedPage.grids[gridIndex].grabbing){
-			state.initGridPos = {...selectedPage.grids[gridIndex].position};
+			state.initGridPos = helpers.cloneVar(selectedPage.grids[gridIndex].position);
 		}
 
 	},
 	initDragPos: function(state, mousePos){
-		state.initDragPos = {...mousePos};
+		state.initDragPos = helpers.cloneVar(mousePos);
 	},
 	updateGridPos: function(state, payload){
 		var selectedPage = state.pages[state.selectedPage]
@@ -196,7 +213,7 @@ const mutations = {
 	},
 	addNewGridToSelectedPage: function(state){
 		var selectedPage = state.pages[state.selectedPage]
-		selectedPage.grids.push({...state.defaultGrid})
+		selectedPage.grids.push(helpers.cloneVar(state.defaultGrid))
 	}
 	
 }
@@ -214,4 +231,3 @@ function snapTo(value){
 	var snapStep = store.getters['book/selectedPageObj'].cellSize
 	return Math.ceil(value / snapStep ) * snapStep
 }
-
