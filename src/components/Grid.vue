@@ -1,11 +1,13 @@
 <template>
 	<div class="grid" :style="gridCssVariables">
+		<!-- invisible -->
 		<div 
 			ref="clickCtrl" 
 			class="click-ctrl" 
 			v-on:click="toggleGrabbing(gridId)"
 			v-if=" grid.grabbing">
-		</div>
+		</div> 
+
 		<div class="column-count-container">
 			<div 
 				class="cells-count"
@@ -39,6 +41,7 @@
 			:style="cellsContainerCss"
 			v-on:mouseleave="clicked = false"
 			>
+
 			<div 
 				class="cell"
 				v-for="(cell, key) in (width*height)"
@@ -53,13 +56,8 @@
 			</div>
 		</div>
 
-		<div class="grid-options">
-			<b v-on:click=toggleGrabbing(gridId)>Grab</b>
-			<!-- <hr>
-			<h5>Debug</h5> -->
-			<p>grab: {{ grid.position }};</p>
-			<!-- <p>initGridPos: {{ initGridPos }};</p>
-			<p>tempDragPos: {{ tempDragPos }};</p> -->
+		<div class="grid-options" v-if="grid.editable">
+			<b v-on:click="toggleGrabbing(gridId)" class="option">Grab</b>
 		</div>
 
 	</div>
@@ -97,10 +95,10 @@ export default {
 			this.$store.dispatch('book/toggleGrabbingOnGrid', gridIndex )
 		},
 		toggleCell: function(key){
-			console.log("toggle",key)
-			// this.$store.commit("book/toggleGridCell",)
-			this.cells[key] == 0 ? this.$set(this.cells, key, 1) : this.$set(this.cells, key, 0);
-			this.updateRowsAndColumnsCount();			
+			if(this.grid.editable){
+				this.cells[key] == 0 ? this.$set(this.cells, key, 1) : this.$set(this.cells, key, 0);
+				this.updateRowsAndColumnsCount();	
+			}		
 		},
 		checkClickAndToggleCell: function(cellIndex){
 			if(this.clicked){
@@ -214,6 +212,7 @@ export default {
 
 <style lang="scss" scoped>
 	.click-ctrl{
+		cursor: grab;
 		position: absolute;
 		left: 0; top: 0;
 		width: 100vw; height: 100vh;
@@ -223,9 +222,16 @@ export default {
 	}
 
 	.grid-options{
-		// position: absolute;
+		background: lemonchiffon;
+		position: absolute;
+		padding: var(--cell-size);
+		right: 0;
 		// right: -150%; top:0;
 		// text-align: left;
+
+		.option{
+			cursor: pointer;
+		}
 	}
 
 	.grid{
@@ -292,6 +298,8 @@ export default {
 		}
 		
 		.cells-container{
+			display: flex;
+			flex-wrap: wrap;
 			// border-top: solid black 2px;
 			// border-left: solid black 2px;
 

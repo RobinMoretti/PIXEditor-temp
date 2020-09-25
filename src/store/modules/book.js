@@ -13,7 +13,19 @@ const state = {
 	],
 	initDragPos: {x:0,y:0},
 	initGridPos: {x:0,y:0},
-	tempDragPos: {x:0,y:0}
+	tempDragPos: {x:0,y:0},
+	defaultGrid: {
+		position: {
+			x: 5,
+			y: 5
+		},
+		width: 10,
+		height: 10,
+		grabbing: false,
+		editable: true,
+		cells: [],
+		visibility: true,
+	}
 }
 
 // getters
@@ -35,21 +47,26 @@ const actions = {
 
 // mutations
 const mutations = {
+	disableAllEditable: function(state){
+		var selectedPage = state.pages[state.selectedPage];
+
+		if(selectedPage.background.editable){
+			selectedPage.background.editable = false
+		}
+
+		for (let index = 0; index < selectedPage.grids.length; index++) {
+			if(selectedPage.grids[index].editable){
+				selectedPage.grids[index].editable = false;	
+			}
+			
+		}
+	},
 	updateTitle: function(state, value){
 		state.title = value;
 	},
 	newPage: function(state){
-		var grid = {};
+		var grid = {...state.defaultGrid};
 
-		grid.position = {
-			x: 5,
-			y: 5
-		}
-
-		grid.width = 10; grid.height = 10;
-		grid.grabbing = false
-		grid.cells = []
-		
 		var cellsLenght = grid.width * grid.height;
 
 		for (let index = 0; index < cellsLenght; index++) {
@@ -57,9 +74,12 @@ const mutations = {
 		}
 
 		var page = {
-			backgroundGrid: [],
+			background: {
+				grid:[],
+				visible: false,
+				editable: false,
+			},
 			cellSize: 1,
-			bgGridOption: false,
 			grids: [
 				grid
 			]
@@ -68,7 +88,7 @@ const mutations = {
 		var backgroundGridLength = (state.width * state.height) / page.cellSize;
 
 		for (let index = 0; index < backgroundGridLength; index++) {
-			page.backgroundGrid.push(0);	
+			page.background.grid.push(0);	
 		}
 		
 		state.pages.push(page)
@@ -89,8 +109,20 @@ const mutations = {
 			grid.position.y =  Math.ceil( grid.position.y / selectedPage.cellSize ) * selectedPage.cellSize
 		}
 	},
-	toggleActivePageBgGridOption: function(state){
-		state.pages[state.selectedPage].bgGridOption = !state.pages[state.selectedPage].bgGridOption;
+	toggleActivePageBgGridVisibility: function(state){
+		state.pages[state.selectedPage].background.visible = !state.pages[state.selectedPage].background.visible;
+	},
+	toggleActivePageBgGridEditable: function(state){
+		state.pages[state.selectedPage].background.editable = !state.pages[state.selectedPage].background.editable;
+	},
+	toggleGridVisibility: function(state, gridId){
+		var grid = state.pages[state.selectedPage].grids[gridId];
+		grid.visibility = !grid.visibility;
+	},
+	toggleGridEditable: function(state, gridId){
+		var grid = state.pages[state.selectedPage].grids[gridId];
+		grid.editable = !grid.editable;
+		console.log(grid.editable )
 	},
 	updateBgGrid: function(state){
 		var selectedPage = state.pages[state.selectedPage];
@@ -100,22 +132,22 @@ const mutations = {
 
 		var count = 0;
 
-		if(selectedPage.backgroundGrid.length > backgroundGridLength){
-			count = selectedPage.backgroundGrid.length - backgroundGridLength;
-			count = selectedPage.backgroundGrid.length - count;
+		if(selectedPage.background.grid.length > backgroundGridLength){
+			count = selectedPage.background.grid.length - backgroundGridLength;
+			count = selectedPage.background.grid.length - count;
 
 			console.log(count)
 
 			for (let index = 0; index < count; index++) {
-				selectedPage.backgroundGrid.pop();	
+				selectedPage.background.grid.pop();	
 			}
 		}
-		else if(selectedPage.backgroundGrid.length < backgroundGridLength){
-			count = backgroundGridLength - selectedPage.backgroundGrid.length;
+		else if(selectedPage.background.grid.length < backgroundGridLength){
+			count = backgroundGridLength - selectedPage.background.grid.length;
 
 			console.log(count)
 			for (let index = 0; index < count; index++) {
-				selectedPage.backgroundGrid.push(0);	
+				selectedPage.background.grid.push(0);	
 			}
 		}	
 	},
@@ -162,6 +194,10 @@ const mutations = {
 			grid.position.y = state.initGridPos.y + newPos.y; 
 		}
 	},
+	addNewGridToSelectedPage: function(state){
+		var selectedPage = state.pages[state.selectedPage]
+		selectedPage.grids.push({...state.defaultGrid})
+	}
 	
 }
 
@@ -178,3 +214,4 @@ function snapTo(value){
 	var snapStep = store.getters['book/selectedPageObj'].cellSize
 	return Math.ceil(value / snapStep ) * snapStep
 }
+

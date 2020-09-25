@@ -1,15 +1,15 @@
 <template>
 	<div class="page-editor" :style="bgGridCssVariables">
 		<div class="page" v-if="selectedPage">
-			<div class="background-grid" v-if="selectedPage.bgGridOption">
+			<div class="background-grid" v-if="selectedPage.background.visible">
 				<div 
 					class="cell"
-					v-for="(cell, key) in selectedPage.backgroundGrid"
+					v-for="(cell, key) in selectedPage.background.grid"
 					:key="'bgcell-' + key"></div>
 			</div>
 
 			<Grid 
-				v-for="(grid, key) in selectedPage.grids"
+				v-for="(grid, key) in grids"
 				:grid="grid"
 				:grid-id="key"
 				:cell-size="selectedPage.cellSize"
@@ -30,30 +30,74 @@
 						class="sm">
 					</InputEditor>
 				</div>
-				<div class="input-group">
+				<!-- <div class="input-group">
 					<label for="cell-size">Background grid</label>
 					
 					<button 
 						v-on:click="togglePageBgGrid">Toggle</button>	
-				</div>
-				<div class="grids-container">
-					<label for="cell-size">Grids</label>
-					<div 
-						class="grid"
-						v-for="(grid, key) in selectedPage.grids"
-						:key="'grid-ref-'+key">
-						{{ key }} - 
-						<!-- <b v-on:click=toggleGrabbing(key)>Grab</b> -->
-						
+				</div> -->
+				<div>
+					<label>Layers:</label>
+					<div class="layers-container">
+						<div class="layer">
+							<div class="id">
+								Background
+							</div>
+							<div class="options">
+								<ImgToggler
+									image-src1="/images/eye-open.png"
+									image-src2="/images/eye-close.png"
+									:value="selectedPage.background.visible"
+									v-on:toggled="togglePageBgGridVisibility"
+									:image-width="3"></ImgToggler>
+
+								<ImgToggler
+									image-src1="/images/pen-enable.png"
+									image-src2="/images/pen-disable.png"
+									:value="selectedPage.background.editable"
+									v-on:toggled="togglePageBgGridEditable"
+									:image-width="3"></ImgToggler>
+							</div>
+						</div>
+
+						<div 
+							class="layer"
+							v-for="(grid, key) in selectedPage.grids"
+							:key="'grid-ref-'+key">
+
+							<div class="id">
+								Grid {{key}}
+							</div>
+							<div class="options">
+								<ImgToggler
+									image-src1="/images/eye-open.png"
+									image-src2="/images/eye-close.png"
+									:value="grid.visibility"
+									v-on:toggled="toggleGridVisibility(key)"
+									:image-width="3"></ImgToggler>
+
+								<ImgToggler
+									image-src1="/images/pen-enable.png"
+									image-src2="/images/pen-disable.png"
+									:value="grid.editable"
+									v-on:toggled="toggleGridEditable(key)"
+									:image-width="3"></ImgToggler>
+							</div>
+						</div>
+						<div 
+							class="layer layer-ctrl">
+
+							<div class="options">
+								<div class="plus" v-on:click="addNewGrid">+</div>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div class="input-group">
 					<button 
 						v-on:click="deleteSelectedPage">DELETE PAGE</button>		
 				</div>
-				<div class="input-group">
-					<p>{{dragMousePos}} drog</p>	
-				</div>
+				
 			</form>
 		</div>
 	</div>
@@ -67,6 +111,12 @@ export default {
 		Grid,
 	},
 	computed: {
+		grids: function(){
+			return this.selectedPage.grids.filter( grid => {
+				console.log("grid.visibility", grid.visibility)
+				return grid.visibility
+			})
+		},
 		dragMousePos: function(){
 			var book = this.$store.state.book;
 			return book.initDragPos;
@@ -93,14 +143,30 @@ export default {
 		},
 	},
 	methods: {
+		addNewGrid: function () {
+			this.$store.commit('book/addNewGridToSelectedPage')
+		},
 		updatePageCellSize: function (value) {
 			this.$store.commit('book/updateActivePageCellSize', value)
 		},
-		togglePageBgGrid: function () {
-			this.$store.commit('book/toggleActivePageBgGridOption')
-			if(this.selectedPage.bgGridOption){
+		togglePageBgGridVisibility: function () {
+			this.$store.commit('book/toggleActivePageBgGridVisibility')
+			if(this.selectedPage.visibility){
 				this.$store.commit('book/updateBgGrid')
 			}
+		},
+		togglePageBgGridEditable: function () {
+			if(!this.selectedPage.background.editable)
+				this.$store.commit('book/disableAllEditable')
+			this.$store.commit('book/toggleActivePageBgGridEditable')
+		},
+		toggleGridVisibility: function (gridId) {
+			this.$store.commit('book/toggleGridVisibility', gridId)
+		},
+		toggleGridEditable: function (gridId) {
+			if(!this.grids[gridId].editable)
+				this.$store.commit('book/disableAllEditable')
+			this.$store.commit('book/toggleGridEditable', gridId)
 		},
 		deleteSelectedPage: function () {
 			this.$store.commit('book/deleteSelectedPage')
@@ -177,6 +243,31 @@ export default {
 				align-items: flex-start;
 				margin-bottom: var(--cell-size);
 				border-bottom: black var(--cell-size) solid;
+			}
+
+
+			label{
+				display: block;
+				width: 100%;
+				text-align: left;
+			}
+
+			.layers-container{
+				margin-top: var(--cell-size);
+				display: flex;
+				flex-direction: column;
+
+				.layer{
+					display: flex;
+					flex-direction: row;
+					justify-content: space-between;
+					margin: 0 0 var(--cell-size) 0;
+
+					.options{
+						display: flex;
+						justify-content: flex-end;
+					}
+				}
 			}
 		}
 	}
