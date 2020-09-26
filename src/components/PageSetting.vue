@@ -132,9 +132,11 @@ export default {
 		},
 		updatePageCellSize: function (value) {
 			this.$store.commit('book/updateActivePageCellSize', value)
+			this.$store.commit('book/updateBgGrid')
 		},
 		togglePageBgGridVisibility: function () {
 			this.$store.commit('book/toggleActivePageBgGridVisibility')
+
 			if(this.selectedPage.visibility){
 				this.$store.commit('book/updateBgGrid')
 			}
@@ -150,7 +152,7 @@ export default {
 		toggleGridEditable: function (gridId) {
 			if(!this.grids[gridId].editable)
 				this.$store.commit('book/disableAllEditable')
-				
+
 			this.$store.commit('book/toggleGridEditable', gridId)
 		},
 		deleteSelectedPage: function () {

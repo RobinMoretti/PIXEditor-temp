@@ -226,11 +226,15 @@ const mutations = {
 
 		var count = 0;
 
+		console.log("selectedPage.background.grid.length", selectedPage.background.grid.length)
+
+		console.log("backgroundGridLength", backgroundGridLength)
+
 		if(selectedPage.background.grid.length > backgroundGridLength){
 			count = selectedPage.background.grid.length - backgroundGridLength;
 			count = selectedPage.background.grid.length - count;
 
-			console.log(count)
+			console.log("count:",count)
 
 			for (let index = 0; index < count; index++) {
 				selectedPage.background.grid.pop();	
@@ -239,7 +243,7 @@ const mutations = {
 		else if(selectedPage.background.grid.length < backgroundGridLength){
 			count = backgroundGridLength - selectedPage.background.grid.length;
 
-			console.log(count)
+			console.log("count:",count)
 			for (let index = 0; index < count; index++) {
 				selectedPage.background.grid.push(0);	
 			}
