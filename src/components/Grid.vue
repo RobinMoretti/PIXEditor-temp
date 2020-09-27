@@ -7,7 +7,7 @@
 			v-on:click="toggleGrabbing(gridId)"
 			v-if=" grid.grabbing">
 		</div> 
-
+<!-- 
 		<div class="column-count-container">
 			<div 
 				class="cells-count"
@@ -33,8 +33,7 @@
 					{{countElem}}
 				</div>
 			</div>
-		</div>
-
+		</div> -->
 		<div 
 			class="cells-container"
 			:class="{ 'no-divider-width': width <= 5, 'no-divider-height': height <= 5 }"
@@ -59,7 +58,6 @@
 		<div class="grid-options" v-if="grid.editable">
 			<b v-on:click="toggleGrabbing(gridId)" class="option">Grab</b>
 		</div>
-
 	</div>
 </template>
 
@@ -96,8 +94,11 @@ export default {
 			this.$store.dispatch('book/toggleGrabbingOnGrid', gridIndex )
 		},
 		toggleCell: function(key){
+				console.log("toggleCell")
+				console.log("this.grid.editable", this.grid.editable)
 			if(this.grid.editable){
-				this.$store.commit('book/updateCellGrid', { gridId: this.gridId, cellId: key, value: 1 } )
+				console.log("toggleCell")
+				this.$store.dispatch('grid/clickedActiveGridCell', { cellId: key } )
 				this.updateRowsAndColumnsCount();	
 			}		
 		},
@@ -173,21 +174,27 @@ export default {
 		cellSizeInCm: function(){
 			return this.cellSize + "cm";
 		},
+		gridBorderWidth: function(){
+			if(this.grid.border.visible)
+				return this.grid.border.width
+			else 
+				return 0
+		},
 		gridCssVariables: function(){
 			return {
 				'--grid-cellsize': this.cellSizeInCm,
 				'--grid-left': (this.grid.position.x) + 'cm',
 				'--grid-top': (this.grid.position.y) + 'cm',
 				'--grid-bg-color': this.grid.backgroundColor.style,
-				'--grid-border-width': this.grid.border.width + 'px',
+				'--grid-border-width': this.gridBorderWidth + 'px',
 				'--grid-border-color': this.grid.border.visible ? this.grid.border.color.style : this.grid.backgroundColor.style,
 				'width': this.cellSize * this.width + 'cm',
 			}
 		},
 		cellsContainerCss: function(){
 			return {
-				'width': (this.cellSize * this.width + 0.01) + "cm",
-				'height': (this.cellSize * this.height + 0.01) + "cm",
+				'width': (this.cellSize * this.width + 0.01 + (this.gridBorderWidth * 0.026458333)) + "cm",
+				'height': ((this.cellSize * this.height) + 0.01 + (this.gridBorderWidth * 0.026458333)) + "cm",
 			}
 		},
 		cells: function(){
@@ -308,6 +315,10 @@ export default {
 			flex-wrap: wrap;
 			// border-top: solid black 2px;
 			// border-left: solid black 2px;
+			border-top: solid var(--grid-border-color) var(--grid-border-width);
+			border-left: solid var(--grid-border-color) var(--grid-border-width);
+			// border-right: unset; border-bottom: unset; border-left: unset;
+			// box-sizing: border-box;
 
 			.cell{  
 				cursor: pointer;
@@ -315,6 +326,7 @@ export default {
 				width: var(--grid-cellsize);
 				height: var(--grid-cellsize);
 				border: solid var(--grid-border-color) var(--grid-border-width);
+				border-left: unset; border-top: unset;
 				// background-color: rgb(184, 175, 175);
 				box-sizing: border-box;
 				color: rgba($color: #000000, $alpha: 0);

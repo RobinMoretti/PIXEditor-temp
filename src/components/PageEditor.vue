@@ -20,6 +20,7 @@
 		</div>
 
 		<div class="panel">
+			<ToolSetting></ToolSetting>
 			<PageSetting  v-if="selectedPage"></PageSetting>
 			<LayerEditor  v-if="selectedPage && selectedPageHaveEditableLayer"></LayerEditor>
 		</div>
@@ -30,12 +31,14 @@
 import Grid from '../components/Grid.vue'
 import PageSetting from '../components/PageSetting.vue'
 import LayerEditor from '../components/LayerEditor.vue'
+import ToolSetting from '../components/ToolSetting.vue'
 
 export default {
 	components: {
 		Grid,
 		PageSetting,
-		LayerEditor
+		LayerEditor,
+		ToolSetting
 	},
 	computed: {
 		selectedPageHaveEditableLayer: function(){
@@ -66,7 +69,7 @@ export default {
 				'--bg-grid-cellsize': this.cellSize + 'cm',
 				'--bg-grid-background-color': this.selectedPage.background.backgroundColor.style,
 				'--bg-grid-border-color':  this.selectedPage.background.border.visible ? this.selectedPage.background.border.color.style : 'rgba(0,0,0,0)',
-				'--bg-grid-border-width':  this.selectedPage.background.border.width + 'px'
+				'--bg-grid-border-width':  (this.selectedPage.background.border.visible ? this.selectedPage.background.border.width : 0) + 'px'
 			}
 		},
 	},
@@ -118,6 +121,8 @@ export default {
 		justify-content: flex-start;
 		align-items: center;
 		flex-wrap: wrap;
+		border: solid  var(--bg-grid-border-width) var(--bg-grid-border-color);
+		border-right: unset; border-bottom: unset;
 
 		.cell{
 			background-color: var(--bg-grid-background-color);
@@ -126,6 +131,7 @@ export default {
 			height: var(--bg-grid-cellsize);
 			box-sizing: border-box;
 			border: solid  var(--bg-grid-border-width) var(--bg-grid-border-color);
+			border-left: unset; border-top: unset;
 		}
 	}
 </style>

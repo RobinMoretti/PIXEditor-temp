@@ -3,6 +3,8 @@ import Vuex from 'vuex'
 
 import book from './modules/book'
 import layer from './modules/layer'
+import grid from './modules/grid'
+import tool from './modules/tool'
 
 // import EventBus from './event-bus';
 
@@ -15,7 +17,9 @@ Vue.use(Vuex)
 export default new Vuex.Store({
 	modules: {
 		book,
-		layer
+		layer,
+		grid,
+		tool
 	},
 	strict: debug,
 	state:{

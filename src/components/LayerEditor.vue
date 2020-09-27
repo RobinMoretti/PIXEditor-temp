@@ -26,7 +26,7 @@
 					width="35%" 
 					v-model="backgroundBorderWidth"
 					:min="0"
-					:max="Math.floor(((selectedPage.cellSize / 0.026458333)))"
+					:max="Math.floor((cellSize / 0.026458333) /2) "
 					:interval="1"></VueSlider>
 
 			</div>

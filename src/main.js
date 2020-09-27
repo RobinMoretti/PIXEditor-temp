@@ -9,6 +9,9 @@ import router from './router'
 
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/antd.css'
+import VTooltip from 'v-tooltip'
+
+Vue.use(VTooltip)
 
 Vue.component('VueSlider', VueSlider)
 

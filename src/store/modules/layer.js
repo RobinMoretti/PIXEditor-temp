@@ -1,4 +1,4 @@
-// import Vue from 'vue'
+import Vue from 'vue'
 // import store from './../../store'
 // import helpers from './../../helpers'
 
@@ -58,7 +58,7 @@ const actions = {
 	},
 	changeLayerBackgroundColor:  function({getters, commit}, payload){
 		var layer =  getters["activeLayer"];
-		commit('changeLayerBackgroundColor', {layer: layer, color: payload.color})
+		// commit('changeLayerBackgroundColor', {layer: layer, color: payload.color})
 		commit('changeLayerProperty', {layer: layer, value: payload.color, property: 'backgroundColor'})
 	}
 }
@@ -67,10 +67,10 @@ const actions = {
 const mutations = {
 	changeLayerProperty:  function(state, payload){
 		if(payload.elem){
-			payload.layer[payload.elem][payload.property] = payload.value;
+			Vue.set(payload.layer[payload.elem], payload.property, payload.value)
 		}
 		else{
-			payload.layer[payload.property] = payload.value;
+			Vue.set(payload.layer, payload.property, payload.value)
 		}
 	},
 	toggleLayerProperty:  function(state, payload){

@@ -1,13 +1,20 @@
 <template>
 	<div class="color-picker-toggler">
-		<div class="color-displayer" v-on:click="toggle" :style="colorToDisplay"></div>
+		<v-popover placement="left-center">
+			<div class="color-displayer" :style="colorToDisplay"></div>
+<!-- 
+			<div class="color-picker-modal" slot="popover">
+			</div> -->
 
-		<div class="color-picker-modal" v-if="displayModal">
-			<ColorPicker
-				:color="color"
-				:onEndChange="color => onColorChange(color)"
-			/>
-		</div>
+			<template slot="popover" >
+				<ColorPicker
+					:color="color"
+					:onEndChange="color => onColorChange(color)"
+				/>
+
+				<a v-close-popover>Close</a>
+			</template>
+		</v-popover>
 	</div>
 </template>
 
@@ -49,7 +56,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 	.color-picker-toggler{
 		position: relative;
 
@@ -61,10 +68,17 @@ export default {
 			border: solid black var(--cell-size);
 		}
 		
-		.color-picker-modal{
-			position: absolute;
-			bottom: var(--cell-size);
-			padding: var(--cell-size);
+	}
+
+	.tooltip {
+		z-index: 10;
+		.tooltip-inner {
+			background: white;
+			
+			// box-shadow: 0 5px 30px rgba(black, .1);
+			border: solid 2px black;
+			padding: 8px;
+			border: solid black 8px;
 		}
 	}
 </style>

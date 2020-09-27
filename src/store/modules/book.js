@@ -112,18 +112,6 @@ const mutations = {
 		var selectedPage = state.pages[state.selectedPage];
 		selectedPage.grids.splice(gridId, 1);
 	},
-	updateCellGrid: function(state, payload){
-		var selectedPage = state.pages[state.selectedPage];
-
-		if(payload.gridId != 'background'){
-			console.log("payload.cellsId", selectedPage.grids[payload.gridId].cells)
-			selectedPage.grids[payload.gridId].cells[payload.cellId] = payload.value
-		}
-		else{
-			//background grid
-		}
-				// this.cells[key] == 0 ? this.$set(this.cells, key, 1) : this.$set(this.cells, key, 0);
-	},
 	disableAllEditable: function(state){
 		var selectedPage = state.pages[state.selectedPage];
 
