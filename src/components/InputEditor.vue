@@ -64,14 +64,11 @@ export default {
 				this.$nextTick(()=>{
 					switch (this.inputType) {
 						case 'text':
-							console.log(this.$refs)
-							console.log(this.$refs.textInput)
 							this.$refs.textInput.focus();
 							break;
 						case 'textarea':
 							this.$refs.textareaInput.focus();
 							break;
-					
 						default:
 							break;
 					}

@@ -45,7 +45,7 @@
 				class="cell"
 				v-for="(cell, key) in (width*height)"
 				:key="'cell-' + key"
-				:class="{ 'filled': cells[key] }"
+				:style="{ 'background': cellBackgroundColor(key) }"
 				v-on:click="toggleCell(key)"
 				v-on:mouseover="checkClickAndToggleCell(key)"
 				v-on:mousedown="clicked = true"
@@ -74,7 +74,6 @@ export default {
 	watch: {
 		mousePos(newValue) {
 			if(this.grid.grabbing){
-				console.log("moving", this.gridId) 
 				this.$store.commit('book/updateGridPos', { grid: this.gridId, mousePos: newValue})
 			}
 		}
@@ -90,12 +89,25 @@ export default {
 		}
 	},
 	methods: {
+		cellBackgroundColor: function(key){
+			var backgroundColor = null
+
+			if(this.cells[key] != null)
+				backgroundColor = this.cells[key]
+			else {
+				// console.log("this.grid.backgroundColor.style", this.grid.backgroundColor)
+				if(this.grid.backgroundColor.style)
+					backgroundColor = this.grid.backgroundColor.style
+				else
+					backgroundColor = "#000"
+			}
+			
+			return backgroundColor
+		}, 
 		toggleGrabbing: function(gridIndex){
 			this.$store.dispatch('book/toggleGrabbingOnGrid', gridIndex )
 		},
 		toggleCell: function(key){
-				console.log("toggleCell")
-				console.log("this.grid.editable", this.grid.editable)
 			if(this.grid.editable){
 				console.log("toggleCell")
 				this.$store.dispatch('grid/clickedActiveGridCell', { cellId: key } )
@@ -310,7 +322,7 @@ export default {
 		}
 		
 		.cells-container{
-			background: var(--grid-bg-color);
+			// background: var(--grid-bg-color);
 			display: flex;
 			flex-wrap: wrap;
 			// border-top: solid black 2px;
@@ -340,9 +352,9 @@ export default {
 			.cell:nth-child(5n){
 				// border-right: 4px solid black;
 			}
-			.filled{
-				background: black;
-			}
+			// .filled{
+			// 	background: black;
+			// }
 		}	
 
 		.no-divider-width{

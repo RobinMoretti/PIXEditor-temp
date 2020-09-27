@@ -54,17 +54,48 @@ const actions = {
 		payload.toolActiveColor = getters["toolActiveColor"];
 		commit('setCellContent', payload)
 	},
-	// updateLayerBorderWidth:  function({getters, commit}, payload){
-	// 	var layer =  getters["activeLayer"];
-	// 	commit('changeLayerProperty', {layer: layer, value: payload.borderWidth, elem: 'border', property: 'width'})
-	// },
+	updateLayerSize: function({getters, commit}, payload){
+		payload.grid = getters["activeGrid"];
+		
+		payload.size = {
+			x: 0,
+			y: 0
+		}
+
+		if(payload.state == "height"){
+			console.log("payload.value", payload.value)
+			console.log("payload.grid.height", payload.grid.height)
+			payload.size.x = payload.value
+			payload.size.y = payload.grid.height
+		}
+		else{
+			console.log("payload.value", payload.value)
+			console.log("payload.grid.width", payload.grid.width)
+			payload.size.x = payload.grid.width
+			payload.size.y = payload.value
+		}
+
+
+
+		commit("setLayerSize", payload)
+	},
 }
 
 // mutations
 const mutations = {
-	setCellContent:  function(state, payload){
-		console.log(payload.toolActiveColor.style)
-		Vue.set(payload.grid.cells, payload.cellId, payload.toolActiveColor.style);
+	setLayerSize: function(state, payload){
+		Vue.set(payload.grid, "width", payload.size.x);
+		Vue.set(payload.grid, "height", payload.size.y);
+
+		console.log("payload.size", payload.size)
+		console.log("grid", payload.grid)
+	},
+	setCellContent: function(state, payload){
+		if(payload.grid.cells[payload.cellId] == payload.toolActiveColor.style){
+			Vue.set(payload.grid.cells, payload.cellId, null);
+		}
+		else
+			Vue.set(payload.grid.cells, payload.cellId, payload.toolActiveColor.style);
 	}
 }
 

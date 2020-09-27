@@ -3,12 +3,6 @@
 		<h3><i v-if="layerIndex != 'background'">Grid</i> {{layerIndex}}</h3>
 
 		<div class="input-group options-conainter">
-
-			<div class="option">
-				<label> Background color </label>
-			</div>
-
-
 			<div class="option">
 				<label> Border: </label>
 				<ImgToggler
@@ -37,6 +31,32 @@
 					:color="layer.backgroundColor"
 					v-on:colorPicked="updateBackgroundColor($event)"></ColorPickerToggler>
 			</div>
+
+			<div class="option" v-if="layerIndex != 'background'">
+				<span>
+					<span>width:</span>
+					<InputEditor 
+						display-input-type="h2"
+						inputType="number"
+						:value="layer.width"
+						v-on:update-value="updateGridWidth"
+						class="sm">
+					</InputEditor>
+				</span>
+			</div>
+
+			<div class="option" v-if="layerIndex != 'background'">
+				<span>
+					<span>height:</span>
+					<InputEditor 
+						display-input-type="h2"
+						inputType="number"
+						:value="layer.height"
+						v-on:update-value="updateGridHeight"
+						class="sm">
+					</InputEditor>
+				</span>
+			</div>
 		</div>
 		
 	</div>
@@ -54,7 +74,6 @@ export default {
 		},
 		grids: function(){
 			return this.selectedPage.grids.filter( grid => {
-				console.log("grid.visibility", grid.visibility)
 				return grid.visibility
 			})
 		},
@@ -88,6 +107,13 @@ export default {
 		updateBorderColor: function(color){
 			this.$store.dispatch('layer/updateLayerBorderColor', { color: color })
 		},
+		updateGridWidth: function(value){
+			this.$store.dispatch('grid/updateLayerSize', { state: "width", value: value })
+		},
+		updateGridHeight: function(value){
+			this.$store.dispatch('grid/updateLayerSize', { state: "height", value: value })
+		},
+		
 	},
 	data () {
 		return {
@@ -112,16 +138,8 @@ export default {
 		width: 100%;
 		margin-bottom: var(--cell-size);
 
-		.input-group,h3{
+		h3{
 			margin-bottom: var(--cell-size);
-			.sm{
-				.input-container{
-					input{	
-					}
-				}
-				.input-value{
-				}
-			}
 		}
 
 		.input-group{

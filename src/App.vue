@@ -22,9 +22,6 @@ export default {
 	methods: {
 		updateMousePosition: function(event){
 			this.$store.commit("updateMousePostion", {x: event.clientX, y: event.clientY })
-		}, 
-		escPressed: function(){
-			console.log("esc")
 		}
 	},
 	data () {
