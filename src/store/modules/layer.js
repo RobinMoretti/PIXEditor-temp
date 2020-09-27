@@ -43,30 +43,38 @@ const getters = {
 
 // actions
 const actions = {
+	updateLayerBorderWidth:  function({getters, commit}, payload){
+		var layer =  getters["activeLayer"];
+		commit('changeLayerProperty', {layer: layer, value: payload.borderWidth, elem: 'border', property: 'width'})
+	},
 	updateLayerBorderColor:  function({getters, commit}, payload){
 		var layer =  getters["activeLayer"];
-		commit('changeLayerBorderColor', {layer: layer, color: payload.color})
+		commit('changeLayerProperty', {layer: layer, value: payload.color, elem: 'border', property: 'color'})
+		// commit('changeLayerBorderColor', {layer: layer, value: payload.color, property: 'border'})
 	},
-	toggleLayerBorderVisible: function({getters, commit}, payload){
+	toggleLayerBorderVisible: function({getters, commit}){
 		var layer =  getters["activeLayer"];
-		commit('toggleLayerBorderVisible', {layer: layer, color: payload.color})
+		commit('toggleLayerProperty', {layer: layer, elem: 'border', property: 'visible'})
 	},
 	changeLayerBackgroundColor:  function({getters, commit}, payload){
 		var layer =  getters["activeLayer"];
 		commit('changeLayerBackgroundColor', {layer: layer, color: payload.color})
+		commit('changeLayerProperty', {layer: layer, value: payload.color, property: 'backgroundColor'})
 	}
 }
 
 // mutations
 const mutations = {
-	changeLayerBorderColor:  function(state, payload){
-		payload.layer.border.color = payload.color;
+	changeLayerProperty:  function(state, payload){
+		if(payload.elem){
+			payload.layer[payload.elem][payload.property] = payload.value;
+		}
+		else{
+			payload.layer[payload.property] = payload.value;
+		}
 	},
-	toggleLayerBorderVisible: function(state, payload){
-		payload.layer.border.visible = payload.layer.border.visible ? false : true
-	},
-	changeLayerBackgroundColor:  function(state, payload){
-		payload.layer.backgroundColor =  payload.color
+	toggleLayerProperty:  function(state, payload){
+		payload.layer[payload.elem][payload.property] = payload.layer[payload.elem][payload.property] ? false : true;
 	}
 }
 

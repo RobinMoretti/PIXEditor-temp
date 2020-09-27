@@ -1,7 +1,9 @@
 <template>
 	<div class="page-editor" :style="bgGridCssVariables">
 		<div class="page" v-if="selectedPage">
-			<div class="background-grid" v-if="selectedPage.background.visible">
+			<div 
+				class="background-grid" 
+				v-if="selectedPage.background.visible">
 				<div 
 					class="cell"
 					v-for="(cell, key) in selectedPage.background.grid"
@@ -62,6 +64,9 @@ export default {
 		bgGridCssVariables: function(){
 			return {
 				'--bg-grid-cellsize': this.cellSize + 'cm',
+				'--bg-grid-background-color': this.selectedPage.background.backgroundColor.style,
+				'--bg-grid-border-color':  this.selectedPage.background.border.visible ? this.selectedPage.background.border.color.style : 'rgba(0,0,0,0)',
+				'--bg-grid-border-width':  this.selectedPage.background.border.width + 'px'
 			}
 		},
 	},
@@ -115,12 +120,12 @@ export default {
 		flex-wrap: wrap;
 
 		.cell{
-			background: red;
+			background-color: var(--bg-grid-background-color);
 			display: inline-block;
 			width: var(--bg-grid-cellsize);
 			height: var(--bg-grid-cellsize);
 			box-sizing: border-box;
-			border: solid 1px black;
+			border: solid  var(--bg-grid-border-width) var(--bg-grid-border-color);
 		}
 	}
 </style>

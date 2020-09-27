@@ -21,6 +21,14 @@
 				<ColorPickerToggler
 					:color="layer.border.color"
 					v-on:colorPicked="updateBorderColor($event)"></ColorPickerToggler>
+
+				<VueSlider 
+					width="35%" 
+					v-model="backgroundBorderWidth"
+					:min="0"
+					:max="Math.floor(((selectedPage.cellSize / 0.026458333)))"
+					:interval="1"></VueSlider>
+
 			</div>
 
 			<div class="option">
@@ -61,13 +69,21 @@ export default {
 		cellSize: function(){
 			return this.$store.getters['book/selectedPageObj'].cellSize
 		},
+		backgroundBorderWidth: {
+			get () {
+				return this.layer.border.width;     
+			},
+			set (val) {
+				this.$store.dispatch('layer/updateLayerBorderWidth', { borderWidth: val })    
+			}
+		}
 	},
 	methods: {
 		updateBackgroundColor(color) {
 			this.$store.dispatch('layer/changeLayerBackgroundColor', { color: { ...color }})
 		},
 		toggleBorder: function(){
-			this.$store.dispatch('layer/toggleLayerBorderVisible', { layerIndex: this.layerIndex })
+			this.$store.dispatch('layer/toggleLayerBorderVisible')
 		},
 		updateBorderColor: function(color){
 			this.$store.dispatch('layer/updateLayerBorderColor', { color: color })
@@ -75,6 +91,7 @@ export default {
 	},
 	data () {
 		return {
+			test: 0
 		}
 	},
 	props: {
@@ -126,10 +143,14 @@ export default {
 
 		.options-conainter{
 			.option{
+				width: 100%;
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
 				margin-bottom: var(--cell-size);
+				label{
+					width: unset !important; 
+				}
 			}
 		}
 

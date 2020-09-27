@@ -179,6 +179,7 @@ export default {
 				'--grid-left': (this.grid.position.x) + 'cm',
 				'--grid-top': (this.grid.position.y) + 'cm',
 				'--grid-bg-color': this.grid.backgroundColor.style,
+				'--grid-border-width': this.grid.border.width + 'px',
 				'--grid-border-color': this.grid.border.visible ? this.grid.border.color.style : this.grid.backgroundColor.style,
 				'width': this.cellSize * this.width + 'cm',
 			}
@@ -313,7 +314,7 @@ export default {
 				display: inline-block;	
 				width: var(--grid-cellsize);
 				height: var(--grid-cellsize);
-				border: solid var(--grid-border-color) 2px;
+				border: solid var(--grid-border-color) var(--grid-border-width);
 				// background-color: rgb(184, 175, 175);
 				box-sizing: border-box;
 				color: rgba($color: #000000, $alpha: 0);

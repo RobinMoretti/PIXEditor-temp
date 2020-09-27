@@ -5,6 +5,7 @@ dependencies:
   vue: 2.6.12
   vue-color-gradient-picker: 0.1.2_core-js@3.6.5+vue@2.6.12
   vue-router: 3.4.3
+  vue-slider-component: 3.2.5_vue@2.6.12
   vue-units: 1.0.4_vue@2.6.12
   vuex: 3.5.1_vue@2.6.12
   vuex-persistedstate: 3.1.0_vue@2.6.12+vuex@3.5.1
@@ -9014,6 +9015,14 @@ packages:
     dev: true
     resolution:
       integrity: sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==
+  /vue-class-component/7.2.6_vue@2.6.12:
+    dependencies:
+      vue: 2.6.12
+    dev: false
+    peerDependencies:
+      vue: ^2.0.0
+    resolution:
+      integrity: sha512-+eaQXVrAm/LldalI272PpDe3+i4mPis0ORiMYxF6Ae4hyuCh15W8Idet7wPUEs4N4YptgFHGys4UrgNQOMyO6w==
   /vue-cli-plugin-style-resources-loader/0.1.4:
     dev: true
     resolution:
@@ -9093,10 +9102,28 @@ packages:
     optional: true
     resolution:
       integrity: sha512-xQ8/GZmRPdQ3EinnE0IXwdVoDzh7Dowo0MowoyBuScEBXrRabw6At5/IdtD3waKklKW5PGokPsm8KRN6rvQ1cw==
+  /vue-property-decorator/8.5.1_vue@2.6.12:
+    dependencies:
+      vue: 2.6.12
+      vue-class-component: 7.2.6_vue@2.6.12
+    dev: false
+    peerDependencies:
+      vue: '*'
+    resolution:
+      integrity: sha512-O6OUN2OMsYTGPvgFtXeBU3jPnX5ffQ9V4I1WfxFQ6dqz6cOUbR3Usou7kgFpfiXDvV7dJQSFcJ5yUPgOtPPm1Q==
   /vue-router/3.4.3:
     dev: false
     resolution:
       integrity: sha512-BADg1mjGWX18Dpmy6bOGzGNnk7B/ZA0RxuA6qedY/YJwirMfKXIDzcccmHbQI0A6k5PzMdMloc0ElHfyOoX35A==
+  /vue-slider-component/3.2.5_vue@2.6.12:
+    dependencies:
+      core-js: 3.6.5
+      vue-property-decorator: 8.5.1_vue@2.6.12
+    dev: false
+    peerDependencies:
+      vue: '*'
+    resolution:
+      integrity: sha512-re1OSpfYHM6Un22/vlAnCb8QtBcxXuno/7/D5z8sGTZNXBgK32zBbz1p/WNwj/qrlCegEEzqfX7Khd4TD4YNXA==
   /vue-style-loader/4.1.2:
     dependencies:
       hash-sum: 1.0.2
@@ -9526,6 +9553,7 @@ specifiers:
   vue-cli-plugin-style-resources-loader: ~0.1.4
   vue-color-gradient-picker: ^0.1.2
   vue-router: ^3.2.0
+  vue-slider-component: ^3.2.5
   vue-template-compiler: ^2.6.11
   vue-units: ^1.0.4
   vuex: ^3.4.0

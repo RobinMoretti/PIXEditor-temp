@@ -150,7 +150,7 @@ export default {
 			this.$store.commit('book/toggleGridVisibility', gridId)
 		},
 		toggleGridEditable: function (gridId) {
-			if(!this.grids[gridId].editable)
+			if(!this.selectedPage.grids[gridId].editable)
 				this.$store.commit('book/disableAllEditable')
 
 			this.$store.commit('book/toggleGridEditable', gridId)
