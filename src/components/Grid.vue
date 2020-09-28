@@ -132,24 +132,30 @@ export default {
 				for (let y = 0; y < this.width; y++) {
 					var cellIndex = (x * this.width) + y
 					var cell = this.cells[cellIndex];
+
+
 					if(cell){
 						//if cell is filled increment count
-						if(!lastColor){
+						if(lastColor == null){
 							count++;
 							lastColor = cell
 						}
 						else{
 							if(lastColor == cell){
 								count++;
-								lastColor = cell
 							}
 							else{
 								this.rows[x].push(count);
 								count = 0
-								lastColor = null
+								lastColor = cell
 								count++;
 							}
 						}
+					}
+					else if(count){
+						this.rows[x].push(count);
+						count = 0
+						lastColor = null
 					}
 				}
 
@@ -176,6 +182,7 @@ export default {
 							lastColor = cell
 						}
 						else{
+
 							if(lastColor == cell){
 								count++;
 								lastColor = cell
@@ -183,10 +190,15 @@ export default {
 							else{
 								this.columns[x].push(count);
 								count = 0
-								lastColor = null
+								lastColor = cell
 								count++;
 							}
 						}
+					}
+					else if(count){
+						this.columns[x].push(count);
+						count = 0
+						lastColor = null
 					}
 				}
 
