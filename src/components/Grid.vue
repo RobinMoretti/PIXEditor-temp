@@ -8,7 +8,10 @@
 			v-if=" grid.grabbing">
 		</div> 
 		
-		<div class="column-count-container" :class="{ bottom: cellCountersPosition.y == 'bottom'}">
+		<div 
+			class="column-count-container" 
+			:class="{ bottom: cellCountersPosition.y == 'bottom'}"
+			:style="{ color: grid.cellsCounter.color.style }">
 			<div 
 				class="cells-count"
 				v-for="(column, key) in columns"
@@ -21,7 +24,10 @@
 			</div>
 		</div>
 		
-		<div class="row-count-container" :class="{ right: cellCountersPosition.x == 'right'}">
+		<div 
+			class="row-count-container" 
+			:class="{ right: cellCountersPosition.x == 'right'}"
+			:style="{ color: grid.cellsCounter.color.style }">
 			<div 
 				class="cells-count-container"
 				v-for="(row, key) in rows"
