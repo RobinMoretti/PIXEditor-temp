@@ -7,8 +7,8 @@
 			v-on:click="toggleGrabbing(gridId)"
 			v-if=" grid.grabbing">
 		</div> 
-
-		<div class="column-count-container">
+		
+		<div class="column-count-container" :class="{ bottom: cellCountersPosition.y == 'bottom'}">
 			<div 
 				class="cells-count"
 				v-for="(column, key) in columns"
@@ -21,7 +21,7 @@
 			</div>
 		</div>
 		
-		<div class="row-count-container">
+		<div class="row-count-container" :class="{ right: cellCountersPosition.x == 'right'}">
 			<div 
 				class="cells-count-container"
 				v-for="(row, key) in rows"
@@ -132,16 +132,6 @@ export default {
 				for (let y = 0; y < this.width; y++) {
 					var cellIndex = (x * this.width) + y
 					var cell = this.cells[cellIndex];
-
-					// if(x == 3 ){
-					// 	console.log("cell[" + x + "/" + y + "] = " + cell)
-					// 	console.log("count", count)
-					// 	console.log("lastColor", lastColor)
-					// 	console.log((count == 0 && cell || count > 0 && lastColor == cell && cell) ? "true" : "false")
-					// 	console.log(((!cell || lastColor != cell) && count) ? "true" : "false")
-					// 	console.log("--------------")
-					// }
-					
 					if(cell){
 						//if cell is filled increment count
 						if(!lastColor){
@@ -264,6 +254,17 @@ export default {
 		},
 		mousePos: function(){
 			return this.$store.state.mousePosition;
+		},
+		cellCountersPosition: function(){
+			if(this.grid.cellsCounter.position){
+				return this.grid.cellsCounter.position
+			}
+			else {
+				return {
+					x: 'left',
+					y: 'top'
+				}
+			}
 		}
 	},
 	created: function(){
@@ -320,8 +321,6 @@ export default {
 			align-items: stretch;
 
 			.cells-count{
-				// background-color: rgb(184, 175, 175);
-				// border: solid black 2px;
 				width: var(--grid-cellsize);
 				box-sizing: border-box;
 				display: flex;
@@ -330,9 +329,14 @@ export default {
 				align-items: center;
 			}
 
-			// .cells-count:nth-child(5n){
-			// 	border-right: solid black 4px;
-			// }
+			&.bottom{
+				top: unset;
+				bottom: -150px;
+				.cells-count{
+					justify-content: flex-start;
+					align-items: center;
+				}
+			}
 		}
 
 		.grid-bottom{
@@ -349,8 +353,6 @@ export default {
 			flex-direction: column;
 
 			.cells-count-container{
-				// background-color: rgb(184, 175, 175);
-				// border: solid black 2px;
 				height: var(--grid-cellsize);
 				min-width: var(--grid-cellsize);
 				box-sizing: border-box;
@@ -358,9 +360,18 @@ export default {
 				flex-direction: row;
 				justify-content: flex-end;
 				align-items: center;
-				// padding-right: calc(var(--grid-cellsize));
 				> div{
 					width: var(--grid-cellsize);
+				}
+			}
+
+			
+			&.right{
+				left: unset;
+				right: -150px;
+				.cells-count-container{
+					justify-content: flex-start;
+					align-items: center;
 				}
 			}
 		}

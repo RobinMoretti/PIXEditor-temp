@@ -33,36 +33,52 @@
 			</div>
 
 			<div class="option" v-if="layerIndex != 'background'">
-				<span>
-					<span>width:</span>
-					<InputEditor 
-						display-input-type="h2"
-						inputType="number"
-						:value="layer.width"
-						v-on:update-value="updateGridWidth"
-						class="sm">
-					</InputEditor>
-				</span>
+				<span>width:</span>
+				<InputEditor 
+					display-input-type="h2"
+					inputType="number"
+					:value="layer.width"
+					v-on:update-value="updateGridWidth"
+					class="sm">
+				</InputEditor>
 			</div>
 
 			<div class="option" v-if="layerIndex != 'background'">
+				<span>height:</span>
+				<InputEditor 
+					display-input-type="h2"
+					inputType="number"
+					:value="layer.height"
+					v-on:update-value="updateGridHeight"
+					class="sm">
+				</InputEditor>
+			</div>
+			<div class="option" v-if="layerIndex != 'background'">
+				<span>Cell counter color:</span>
+				<ColorPickerToggler
+					:color="layer.cellsCounter.color"
+					v-on:colorPicked="updateCellsCounterColor($event)"></ColorPickerToggler>
+			</div>
+			<div class="option" v-if="layerIndex != 'background'">
+				<span>Cell counter X:</span>
 				<span>
-					<span>height:</span>
-					<InputEditor 
-						display-input-type="h2"
-						inputType="number"
-						:value="layer.height"
-						v-on:update-value="updateGridHeight"
-						class="sm">
-					</InputEditor>
+					<label for="left">Left</label>
+					<input type="radio" id="left" value="left" v-model="CellCounterXPos">
+				</span>
+				<span>
+					<label for="right">Right</label>
+					<input type="radio" id="right" value="right" v-model="CellCounterXPos">
 				</span>
 			</div>
 			<div class="option" v-if="layerIndex != 'background'">
+				<span>Cell counter Y:</span>
 				<span>
-					<span>Cell counter color:</span>
-					<ColorPickerToggler
-						:color="layer.cellsCounter.color"
-						v-on:colorPicked="updateCellsCounterColor($event)"></ColorPickerToggler>
+					<label for="top">Top</label>
+					<input type="radio" id="top" value="top" v-model="CellCounterYPos">
+				</span>
+				<span>
+					<label for="bottom">Bottom</label>
+					<input type="radio" id="bottom" value="bottom" v-model="CellCounterYPos">
 				</span>
 			</div>
 		</div>
@@ -102,6 +118,22 @@ export default {
 			},
 			set (val) {
 				this.$store.dispatch('layer/updateLayerBorderWidth', { borderWidth: val })    
+			}
+		},
+		CellCounterXPos: {
+			get () {
+				return this.layer.cellsCounter.position ? this.layer.cellsCounter.position.x : 'left';     
+			},
+			set (val) {
+				this.$store.dispatch('layer/updateLayerCellsCounterPositionX', { position: val })  
+			}
+		},
+		CellCounterYPos: {
+			get () {
+				return this.layer.cellsCounter.position ? this.layer.cellsCounter.position.y : 'top';     
+			},
+			set (val) {
+				this.$store.dispatch('layer/updateLayerCellsCounterPositionY', { position: val })  
 			}
 		}
 	},

@@ -58,12 +58,11 @@ const getters = {
 const actions = {
 	updateLayerBorderWidth:  function({getters, commit}, payload){
 		var layer =  getters["activeLayer"];
-		commit('changeLayerProperty', {layer: layer, value: payload.borderWidth, elem: 'border', property: 'width'})
+		commit('changeLayerProperty', {layer: layer, value: payload.borderWidth, property: 'border/width'})
 	},
 	updateLayerBorderColor:  function({getters, commit}, payload){
 		var layer =  getters["activeLayer"];
-		commit('changeLayerProperty', {layer: layer, value: payload.color, elem: 'border', property: 'color'})
-		// commit('changeLayerBorderColor', {layer: layer, value: payload.color, property: 'border'})
+		commit('changeLayerProperty', {layer: layer, value: payload.color, property: 'border/color'})
 	},
 	toggleLayerBorderVisible: function({getters, commit}){
 		var layer =  getters["activeLayer"];
@@ -75,19 +74,29 @@ const actions = {
 	},
 	changeLayerCellsCounterColor:  function({getters, commit}, payload){
 		var layer =  getters["activeLayer"];
-		commit('changeLayerProperty', {layer: layer, value: payload.color, elem: 'cellsCounter', property: 'color'})
+		commit('changeLayerProperty', {layer: layer, value: payload.color, property: 'cellsCounter/color'})
+	},
+	updateLayerCellsCounterPositionX:  function({getters, commit}, payload){
+		var layer =  getters["activeLayer"];
+		commit('changeLayerProperty', {layer: layer, value: payload.position, property: 'cellsCounter/position/x'})
+	},
+	updateLayerCellsCounterPositionY:  function({getters, commit}, payload){
+		var layer =  getters["activeLayer"];
+		commit('changeLayerProperty', {layer: layer, value: payload.position, property: 'cellsCounter/position/y'})
 	}
 }
 
 // mutations
 const mutations = {
 	changeLayerProperty:  function(state, payload){
-		if(payload.elem){
-			Vue.set(payload.layer[payload.elem], payload.property, payload.value)
+		var properties = payload.property.split('/')
+		var layerParentProperty = payload.layer
+
+		for (let index = 0; index < properties.length-1; index++) {
+			layerParentProperty = layerParentProperty[properties[index]];
 		}
-		else{
-			Vue.set(payload.layer, payload.property, payload.value)
-		}
+
+		Vue.set(layerParentProperty, properties[properties.length-1], payload.value)
 	},
 	toggleLayerProperty:  function(state, payload){
 		payload.layer[payload.elem][payload.property] = payload.layer[payload.elem][payload.property] ? false : true;

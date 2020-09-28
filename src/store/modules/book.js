@@ -51,6 +51,10 @@ const state = {
 				alpha: 1,
 				style: 'rgb(100,100,100)'
 			},
+			position: {
+				x: 'left',
+				y: 'top'
+			}
 		}
 
 	}
