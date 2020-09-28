@@ -83,7 +83,11 @@ const actions = {
 	updateLayerCellsCounterPositionY:  function({getters, commit}, payload){
 		var layer =  getters["activeLayer"];
 		commit('changeLayerProperty', {layer: layer, value: payload.position, property: 'cellsCounter/position/y'})
-	}
+	},
+	toggleCellsCounterColored: function({getters, commit}){
+		var layer =  getters["activeLayer"];
+		commit('toggleLayerProperty', {layer: layer, elem: 'cellsCounter', property: 'colored'})
+	},
 }
 
 // mutations

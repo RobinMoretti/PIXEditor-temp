@@ -7,27 +7,26 @@
 			v-on:click="toggleGrabbing(gridId)"
 			v-if=" grid.grabbing">
 		</div> 
-		
+
 		<div 
 			class="column-count-container" 
-			:class="{ bottom: cellCountersPosition.y == 'bottom'}"
-			:style="{ color: grid.cellsCounter.color.style }">
+			:class="{ bottom: cellCountersPosition.y == 'bottom'}">
 			<div 
 				class="cells-count"
 				v-for="(column, key) in columns"
 				:key="'column-'+key">
 					<div
 						v-for="(countElem, key) in column"
-						:key="'count-elem-'+key">
-						{{countElem}}
+						:key="'count-elem-'+key"
+						:style="{color: grid.cellsCounter.colored ? countElem.color : grid.cellsCounter.color.style}">
+						{{countElem.count}}
 					</div>
 			</div>
 		</div>
 		
 		<div 
 			class="row-count-container" 
-			:class="{ right: cellCountersPosition.x == 'right'}"
-			:style="{ color: grid.cellsCounter.color.style }">
+			:class="{ right: cellCountersPosition.x == 'right'}">
 			<div 
 				class="cells-count-container"
 				v-for="(row, key) in rows"
@@ -35,8 +34,9 @@
 
 				<div
 					v-for="(countElem, key) in row"
-					:key="'count-elem-'+key">
-					{{countElem}}
+					:key="'count-elem-'+key"
+					:style="{color: grid.cellsCounter.colored ? countElem.color : grid.cellsCounter.color.style}">
+					{{countElem.count}}
 				</div>
 			</div>
 		</div>
@@ -151,7 +151,11 @@ export default {
 								count++;
 							}
 							else{
-								this.rows[x].push(count);
+								this.rows[x].push({
+									count: count,
+									color: cell
+								});
+
 								count = 0
 								lastColor = cell
 								count++;
@@ -159,16 +163,28 @@ export default {
 						}
 					}
 					else if(count){
-						this.rows[x].push(count);
+						this.rows[x].push({
+							count: count,
+							color: lastColor
+						});
+						
+						console.log("cell", cell)
+
 						count = 0
 						lastColor = null
 					}
 				}
 
 				if(!count && this.rows[x].length == 0){
-					this.rows[x].push(0);
+					this.rows[x].push({
+						count: 0,
+						color: "black"
+					});
 				}else if(count){
-					this.rows[x].push(count);
+					this.rows[x].push({
+						count: count,
+						color: lastColor
+					});
 				}
 			}
 
@@ -194,7 +210,11 @@ export default {
 								lastColor = cell
 							}
 							else{
-								this.columns[x].push(count);
+								this.columns[x].push({
+									count: count,
+									color: cell
+								});
+
 								count = 0
 								lastColor = cell
 								count++;
@@ -202,16 +222,26 @@ export default {
 						}
 					}
 					else if(count){
-						this.columns[x].push(count);
+						this.columns[x].push({
+							count: count,
+							color: lastColor
+						});
+
 						count = 0
 						lastColor = null
 					}
 				}
 
 				if(!count && this.columns[x].length == 0){
-					this.columns[x].push(0);
+					this.columns[x].push({
+						count: 0,
+						color: "black"
+					});
 				}else if(count){
-					this.columns[x].push(count);
+					this.columns[x].push({
+						count: count,
+						color: lastColor
+					});
 				}
 			}
 		}

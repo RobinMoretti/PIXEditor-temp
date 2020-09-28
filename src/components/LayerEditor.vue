@@ -81,6 +81,17 @@
 					<input type="radio" id="bottom" value="bottom" v-model="CellCounterYPos">
 				</span>
 			</div>
+			<div class="option" v-if="layerIndex != 'background'">
+				<span>Cell counter colored:</span>
+				<ImgToggler
+					image-src1="/images/check.png"
+					image-src2="/images/checked.png"
+					:value="layer.cellsCounter.colored"
+					v-on:toggled="toggleCellsCounterColored"
+					:image-width="3"></ImgToggler>
+			</div>
+
+
 		</div>
 		
 	</div>
@@ -155,6 +166,9 @@ export default {
 		},
 		updateGridHeight: function(value){
 			this.$store.dispatch('grid/updateLayerSize', { state: "height", value: value })
+		},
+		toggleCellsCounterColored: function(){
+			this.$store.dispatch('layer/toggleCellsCounterColored')
 		},
 		
 	},

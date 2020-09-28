@@ -54,7 +54,8 @@ const state = {
 			position: {
 				x: 'left',
 				y: 'top'
-			}
+			}, 
+			colored: true // colored by drawing or colored gloabaly
 		}
 
 	}
