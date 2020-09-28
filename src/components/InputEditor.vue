@@ -7,13 +7,7 @@
 			v-if="!displayInput">
 				{{value}}
 		</component>
-
-
-		<!-- <component 
-			v-bind:is="inputType" 
-			v-if="displayInput"
-			v-model="tempValue">
-		</component> -->
+		
 		<div class="input-container" v-if="displayInput">
 			<input 
 				v-model="tempValue"  

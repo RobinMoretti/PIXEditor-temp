@@ -7,7 +7,7 @@
 			v-on:click="toggleGrabbing(gridId)"
 			v-if=" grid.grabbing">
 		</div> 
-<!-- 
+
 		<div class="column-count-container">
 			<div 
 				class="cells-count"
@@ -33,7 +33,7 @@
 					{{countElem}}
 				</div>
 			</div>
-		</div> -->
+		</div>
 		<div 
 			class="cells-container"
 			:class="{ 'no-divider-width': width <= 5, 'no-divider-height': height <= 5 }"
@@ -128,19 +128,38 @@ export default {
 			for (let x = 0; x < this.height; x++) {
 				this.rows.push([]);
 				count = 0
-
+				var lastColor = null
 				for (let y = 0; y < this.width; y++) {
 					var cellIndex = (x * this.width) + y
 					var cell = this.cells[cellIndex];
+
+					// if(x == 3 ){
+					// 	console.log("cell[" + x + "/" + y + "] = " + cell)
+					// 	console.log("count", count)
+					// 	console.log("lastColor", lastColor)
+					// 	console.log((count == 0 && cell || count > 0 && lastColor == cell && cell) ? "true" : "false")
+					// 	console.log(((!cell || lastColor != cell) && count) ? "true" : "false")
+					// 	console.log("--------------")
+					// }
 					
 					if(cell){
 						//if cell is filled increment count
-						count++;
-					}
-					else if(count && !cell){
-						this.rows[x].push(count);
-						count = 0
-						//else if count is more than zero and cell is not filled add to row
+						if(!lastColor){
+							count++;
+							lastColor = cell
+						}
+						else{
+							if(lastColor == cell){
+								count++;
+								lastColor = cell
+							}
+							else{
+								this.rows[x].push(count);
+								count = 0
+								lastColor = null
+								count++;
+							}
+						}
 					}
 				}
 
@@ -154,17 +173,30 @@ export default {
 			for (let x = 0; x < this.width; x++) {
 				this.columns.push([]);
 				count = 0
-
+				lastColor = null
+				
 				for (let y = 0; y < this.height; y++) {
 					cellIndex = (y * this.width) + x
 					cell = this.cells[cellIndex];
 
 					if(cell){
-						count++;
-					}
-					else if(count && !cell){
-						this.columns[x].push(count);
-						count = 0
+						//if cell is filled increment count
+						if(lastColor == null){
+							count++;
+							lastColor = cell
+						}
+						else{
+							if(lastColor == cell){
+								count++;
+								lastColor = cell
+							}
+							else{
+								this.columns[x].push(count);
+								count = 0
+								lastColor = null
+								count++;
+							}
+						}
 					}
 				}
 
@@ -195,13 +227,22 @@ export default {
 		gridCssVariables: function(){
 			return {
 				'--grid-cellsize': this.cellSizeInCm,
-				'--grid-left': (this.grid.position.x) + 'cm',
-				'--grid-top': (this.grid.position.y) + 'cm',
+				'--grid-left': (this.gridPosition.x) + 'cm',
+				'--grid-top': (this.gridPosition.y) + 'cm',
 				'--grid-bg-color': this.grid.backgroundColor.style,
 				'--grid-border-width': this.gridBorderWidth + 'px',
 				'--grid-border-color': this.grid.border.visible ? this.grid.border.color.style : this.grid.backgroundColor.style,
+				'--grid-cells-counter-color': this.grid.cellsCounter.color.style,
 				'width': this.cellSize * this.width + 'cm',
 			}
+		},
+		gridPosition: function(){
+			var position = {x:0, y:0}
+			var pageBorderWidth = this.$store.getters['book/selectedPageObj'].background.border.width;
+
+			position.x = this.grid.position.x + ((pageBorderWidth/2 ) * 0.026458333)
+			position.y = this.grid.position.y + ((pageBorderWidth/2 ) * 0.026458333)
+			return position
 		},
 		cellsContainerCss: function(){
 			return {
@@ -279,7 +320,7 @@ export default {
 			align-items: stretch;
 
 			.cells-count{
-				background-color: rgb(184, 175, 175);
+				// background-color: rgb(184, 175, 175);
 				// border: solid black 2px;
 				width: var(--grid-cellsize);
 				box-sizing: border-box;
@@ -289,9 +330,9 @@ export default {
 				align-items: center;
 			}
 
-			.cells-count:nth-child(5n){
-				border-right: solid black 4px;
-			}
+			// .cells-count:nth-child(5n){
+			// 	border-right: solid black 4px;
+			// }
 		}
 
 		.grid-bottom{
@@ -308,7 +349,7 @@ export default {
 			flex-direction: column;
 
 			.cells-count-container{
-				background-color: rgb(184, 175, 175);
+				// background-color: rgb(184, 175, 175);
 				// border: solid black 2px;
 				height: var(--grid-cellsize);
 				min-width: var(--grid-cellsize);
@@ -317,7 +358,10 @@ export default {
 				flex-direction: row;
 				justify-content: flex-end;
 				align-items: center;
-				padding-right: calc(var(--grid-cellsize)/4);
+				// padding-right: calc(var(--grid-cellsize));
+				> div{
+					width: var(--grid-cellsize);
+				}
 			}
 		}
 		

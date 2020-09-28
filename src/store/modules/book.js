@@ -30,7 +30,8 @@ const state = {
 			red: 255,
 			green: 255,
 			blue: 255,
-			alpha: 1
+			alpha: 1,
+			style: 'rgb(255,255,255)'
 		},
 		border: {
 			visible: false,
@@ -38,7 +39,17 @@ const state = {
 				red: 255,
 				green: 255,
 				blue: 255,
-				alpha: 1
+				alpha: 1,
+				style: 'rgb(255,255,255)'
+			},
+		},
+		cellsCounter: {
+			color: {
+				red: 100,
+				green: 100,
+				blue: 100,
+				alpha: 1,
+				style: 'rgb(100,100,100)'
 			},
 		}
 

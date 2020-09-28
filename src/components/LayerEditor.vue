@@ -57,6 +57,14 @@
 					</InputEditor>
 				</span>
 			</div>
+			<div class="option" v-if="layerIndex != 'background'">
+				<span>
+					<span>Cell counter color:</span>
+					<ColorPickerToggler
+						:color="layer.cellsCounter.color"
+						v-on:colorPicked="updateCellsCounterColor($event)"></ColorPickerToggler>
+				</span>
+			</div>
 		</div>
 		
 	</div>
@@ -98,6 +106,9 @@ export default {
 		}
 	},
 	methods: {
+		updateCellsCounterColor(color) {
+			this.$store.dispatch('layer/changeLayerCellsCounterColor', { color: { ...color }})
+		},
 		updateBackgroundColor(color) {
 			this.$store.dispatch('layer/changeLayerBackgroundColor', { color: { ...color }})
 		},

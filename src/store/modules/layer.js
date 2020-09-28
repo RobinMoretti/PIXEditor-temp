@@ -1,6 +1,6 @@
 import Vue from 'vue'
 // import store from './../../store'
-// import helpers from './../../helpers'
+import helpers from './../../helpers'
 
 // import router from '../../router'
 
@@ -39,6 +39,19 @@ const getters = {
 	selectedPage: function(state, getters, rootState){
 		return rootState.book.pages[rootState.book.selectedPage];
 	},
+	activeLayerColors: function(state, getters){
+		var layer =  getters["activeLayer"];
+		
+		if(layer){
+			var colors = layer.cells.filter(helpers.onlyUnique)
+			colors = colors.filter(color => color)
+			return colors;
+		}
+		else{
+
+			return {}
+		}
+	},
 }
 
 // actions
@@ -58,8 +71,11 @@ const actions = {
 	},
 	changeLayerBackgroundColor:  function({getters, commit}, payload){
 		var layer =  getters["activeLayer"];
-		// commit('changeLayerBackgroundColor', {layer: layer, color: payload.color})
 		commit('changeLayerProperty', {layer: layer, value: payload.color, property: 'backgroundColor'})
+	},
+	changeLayerCellsCounterColor:  function({getters, commit}, payload){
+		var layer =  getters["activeLayer"];
+		commit('changeLayerProperty', {layer: layer, value: payload.color, elem: 'cellsCounter', property: 'color'})
 	}
 }
 
