@@ -41,9 +41,18 @@ const getters = {
 	},
 	activeLayerColors: function(state, getters){
 		var layer =  getters["activeLayer"];
+
+		var grid = null
+
+		if(getters["activeLayerIndex"] == "background"){
+			grid = layer.grid
+		}
+		else{
+			grid = layer.cells
+		}
 		
 		if(layer){
-			var colors = layer.cells.filter(helpers.onlyUnique)
+			var colors = grid.filter(helpers.onlyUnique)
 			colors = colors.filter(color => color)
 			return colors;
 		}

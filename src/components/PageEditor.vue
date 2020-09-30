@@ -76,7 +76,7 @@ export default {
 	},
 	methods: {
 		toggleBgGridCell: function(key){
-			if(this.grid.editable){
+			if(selectedPage.background.grid.editable){
 				this.$store.dispatch('grid/clickedActiveGridCell', { cellId: key } )
 				this.updateRowsAndColumnsCount();	
 			}	
@@ -103,6 +103,7 @@ export default {
 		align-items: flex-start;
 
 		.page{
+			background-color: var(--bg-grid-background-color);
 			position: relative;
 			border: solid var(--cell-size) black;
 			// box-sizing: border-box;
@@ -132,7 +133,6 @@ export default {
 		border-right: unset; border-bottom: unset;
 
 		.cell{
-			background-color: var(--bg-grid-background-color);
 			display: inline-block;
 			width: var(--bg-grid-cellsize);
 			height: var(--bg-grid-cellsize);
