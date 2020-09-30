@@ -10,7 +10,8 @@
 
 		<div 
 			class="column-count-container" 
-			:class="{ bottom: cellCountersPosition.y == 'bottom'}">
+			:class="{ bottom: cellCountersPosition.y == 'bottom'}"
+			:style="{ opacity: cellCounters.opacity }">
 			<div 
 				class="cells-count"
 				v-for="(column, key) in columns"
@@ -26,7 +27,8 @@
 		
 		<div 
 			class="row-count-container" 
-			:class="{ right: cellCountersPosition.x == 'right'}">
+			:class="{ right: cellCountersPosition.x == 'right'}"
+			:style="{ opacity: cellCounters.opacity }">
 			<div 
 				class="cells-count-container"
 				v-for="(row, key) in rows"
@@ -273,10 +275,15 @@ export default {
 		gridPosition: function(){
 			var position = {x:0, y:0}
 			var pageBorderWidth = this.$store.getters['book/selectedPageObj'].background.border.width;
+			if(pageBorderWidth){
+				position.x = this.grid.position.x + ((pageBorderWidth/2 ) * 0.026458333) // center the box if border width
+				position.y = this.grid.position.y + ((pageBorderWidth/2 ) * 0.026458333)
 
-			position.x = this.grid.position.x + ((pageBorderWidth/2 ) * 0.026458333)
-			position.y = this.grid.position.y + ((pageBorderWidth/2 ) * 0.026458333)
-			return position
+				return position
+			}
+			else{
+				return this.grid.position
+			}
 		},
 		cellsContainerCss: function(){
 			return {
@@ -298,6 +305,9 @@ export default {
 		},
 		mousePos: function(){
 			return this.$store.state.mousePosition;
+		},
+		cellCounters: function(){
+			return this.grid.cellsCounter
 		},
 		cellCountersPosition: function(){
 			if(this.grid.cellsCounter.position){

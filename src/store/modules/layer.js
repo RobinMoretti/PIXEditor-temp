@@ -88,6 +88,10 @@ const actions = {
 		var layer =  getters["activeLayer"];
 		commit('toggleLayerProperty', {layer: layer, elem: 'cellsCounter', property: 'colored'})
 	},
+	updateLayerCellsCounterOpacity: function({getters, commit}, payload){
+		var layer =  getters["activeLayer"];
+		commit('changeLayerProperty', {layer: layer, value: payload.opacity, property: 'cellsCounter/opacity'})
+	},
 }
 
 // mutations

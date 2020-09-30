@@ -154,6 +154,7 @@ export default {
 			this.$store.commit('book/deleteSelectedPage')
 		},
 		updateGridPos: function(gridIndex){
+			console.log('updateGridPos')
 			this.$store.dispatch('book/toggleGrabbingOnGrid', gridIndex )
 
 			if(this.selectedPage.grids[gridIndex].grabbing){

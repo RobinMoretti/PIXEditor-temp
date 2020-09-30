@@ -264,9 +264,12 @@ const mutations = {
 	},
 	toggleGrabbingOnGrid: function(state, gridIndex){
 		var selectedPage = state.pages[state.selectedPage];
-		selectedPage.grids[gridIndex].grabbing = !selectedPage.grids[gridIndex].grabbing;
-		if(selectedPage.grids[gridIndex].grabbing){
-			state.initGridPos = helpers.cloneVar(selectedPage.grids[gridIndex].position);
+		var grids = selectedPage.grids.filter( grid => { return grid.visibility })
+
+		grids[gridIndex].grabbing = !grids[gridIndex].grabbing;
+
+		if(grids[gridIndex].grabbing){
+			state.initGridPos = helpers.cloneVar(grids[gridIndex].position);
 		}
 
 	},
@@ -275,11 +278,16 @@ const mutations = {
 	},
 	updateGridPos: function(state, payload){
 		var selectedPage = state.pages[state.selectedPage]
-		var grid = selectedPage.grids[payload.grid]
 
+
+		var grids = selectedPage.grids.filter( grid => { return grid.visibility })
+
+		var grid = grids[payload.grid]
+
+		
 		var initPosX = (state.initDragPos.x * 0.026458333) 
 		var initPosY = (state.initDragPos.y * 0.026458333) 
-
+		
 		var mousePosX = (payload.mousePos.x * 0.026458333)
 		var mousePosY = (payload.mousePos.y * 0.026458333)
 		
@@ -287,6 +295,7 @@ const mutations = {
 			x: snapTo((mousePosX - initPosX)),  
 			y: snapTo((mousePosY - initPosY))
 		}
+		
 
 		if(state.tempDragPos.x != newPos.x || state.tempDragPos.y != newPos.y){
 			state.tempDragPos.x = newPos.x;  
@@ -295,6 +304,7 @@ const mutations = {
 			grid.position.x = state.initGridPos.x + newPos.x;  
 			grid.position.y = state.initGridPos.y + newPos.y; 
 		}
+
 	},
 	addNewGridToSelectedPage: function(state){
 		var selectedPage = state.pages[state.selectedPage]

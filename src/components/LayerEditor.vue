@@ -60,6 +60,15 @@
 					v-on:colorPicked="updateCellsCounterColor($event)"></ColorPickerToggler>
 			</div>
 			<div class="option" v-if="layerIndex != 'background'">
+				<span>Cell counter opacity:</span>
+				<VueSlider 
+					width="35%" 
+					v-model="CellCounterOpacity"
+					:min="0"
+					:max="1"
+					:interval="0.05"></VueSlider>
+			</div>
+			<div class="option" v-if="layerIndex != 'background'">
 				<span>Cell counter X:</span>
 				<span>
 					<label for="left">Left</label>
@@ -127,6 +136,14 @@ export default {
 			},
 			set (val) {
 				this.$store.dispatch('layer/updateLayerBorderWidth', { borderWidth: val })    
+			}
+		},
+		CellCounterOpacity: {
+			get () {
+				return this.layer.cellsCounter.opacity;     
+			},
+			set (val) {
+				this.$store.dispatch('layer/updateLayerCellsCounterOpacity', { opacity: val })    
 			}
 		},
 		CellCounterXPos: {
