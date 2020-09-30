@@ -8,6 +8,7 @@
 					class="cell"
 					v-for="(cell, key) in selectedPage.background.grid"
 					:key="'bgcell-' + key"
+					:style="{ background: cell }"
 					v-on:click="toggleBgGridCell(key)"></div>
 			</div>
 
@@ -76,9 +77,10 @@ export default {
 	},
 	methods: {
 		toggleBgGridCell: function(key){
-			if(selectedPage.background.grid.editable){
+			console.log('selectedPage.background.grid.editable', this.selectedPage.background.editable)
+			if(this.selectedPage.background.editable){
 				this.$store.dispatch('grid/clickedActiveGridCell', { cellId: key } )
-				this.updateRowsAndColumnsCount();	
+				// this.updateRowsAndColumnsCount();	
 			}	
 		}
 	},

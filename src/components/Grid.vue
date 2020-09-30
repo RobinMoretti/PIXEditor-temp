@@ -270,6 +270,8 @@ export default {
 				'--grid-border-color': this.grid.border.visible ? this.grid.border.color.style : this.grid.backgroundColor.style,
 				'--grid-cells-counter-color': this.grid.cellsCounter.color.style,
 				'width': this.cellSize * this.width + 'cm',
+				'pointer-events': this.grid.editable ? 'initial' : "none",
+				'opacity': this.grid.editable ? 1 : 0.2,
 			}
 		},
 		gridPosition: function(){
@@ -472,4 +474,5 @@ export default {
 			}
 		}
 	}
+	
 </style>

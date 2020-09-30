@@ -19,7 +19,8 @@ const getters = {
 	},
 	activeGrid: function(state, getters){
 		var selectedPage = getters["selectedPage"];
-		if(selectedPage.background.grid.editable){
+
+		if(selectedPage.background.editable){
 			return selectedPage.background.grid
 		}
 
@@ -32,7 +33,7 @@ const getters = {
 	activeGridIndex: function(state, getters){
 		var selectedPage = getters["selectedPage"];
 		
-		if(selectedPage.background.grid.editable){
+		if(selectedPage.background.editable){
 			return "background"
 		}
 
@@ -51,7 +52,13 @@ const getters = {
 const actions = {
 	clickedActiveGridCell: function({getters, commit}, payload){
 		payload.grid = getters["activeGrid"];
+
+		if(getters["activeGridIndex"] != 'background'){
+			payload.grid = payload.grid.cells;
+		}
+
 		payload.toolActiveColor = getters["toolActiveColor"];
+
 		commit('setCellContent', payload)
 	},
 	updateLayerSize: function({getters, commit}, payload){
@@ -63,14 +70,10 @@ const actions = {
 		}
 
 		if(payload.state == "height"){
-			console.log("payload.value", payload.value)
-			console.log("payload.grid.height", payload.grid.height)
 			payload.size.x = payload.value
 			payload.size.y = payload.grid.height
 		}
 		else{
-			console.log("payload.value", payload.value)
-			console.log("payload.grid.width", payload.grid.width)
 			payload.size.x = payload.grid.width
 			payload.size.y = payload.value
 		}
@@ -86,16 +89,13 @@ const mutations = {
 	setLayerSize: function(state, payload){
 		Vue.set(payload.grid, "width", payload.size.x);
 		Vue.set(payload.grid, "height", payload.size.y);
-
-		console.log("payload.size", payload.size)
-		console.log("grid", payload.grid)
 	},
 	setCellContent: function(state, payload){
-		if(payload.grid.cells[payload.cellId] == payload.toolActiveColor.style){
-			Vue.set(payload.grid.cells, payload.cellId, null);
+		if(payload.grid[payload.cellId] == payload.toolActiveColor.style){
+			Vue.set(payload.grid, payload.cellId, null);
 		}
 		else
-			Vue.set(payload.grid.cells, payload.cellId, payload.toolActiveColor.style);
+			Vue.set(payload.grid, payload.cellId, payload.toolActiveColor.style);
 	}
 }
 
