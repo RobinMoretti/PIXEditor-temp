@@ -12,12 +12,7 @@
 					class="sm">
 				</InputEditor>
 			</div>
-			<!-- <div class="input-group">
-				<label for="cell-size">Background grid</label>
-				
-				<button 
-					v-on:click="togglePageBgGrid">Toggle</button>	
-			</div> -->
+			
 			<div>
 				<label>Layers:</label>
 				<div class="layers-container">

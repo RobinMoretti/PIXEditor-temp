@@ -90,8 +90,6 @@
 					v-on:toggled="toggleCellsCounterColored"
 					:image-width="3"></ImgToggler>
 			</div>
-
-
 		</div>
 		
 	</div>

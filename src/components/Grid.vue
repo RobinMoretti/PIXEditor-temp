@@ -115,7 +115,6 @@ export default {
 		},
 		toggleCell: function(key){
 			if(this.grid.editable){
-				console.log("toggleCell")
 				this.$store.dispatch('grid/clickedActiveGridCell', { cellId: key } )
 				this.updateRowsAndColumnsCount();	
 			}		
@@ -135,10 +134,10 @@ export default {
 				this.rows.push([]);
 				count = 0
 				var lastColor = null
+
 				for (let y = 0; y < this.width; y++) {
 					var cellIndex = (x * this.width) + y
 					var cell = this.cells[cellIndex];
-
 
 					if(cell){
 						//if cell is filled increment count
@@ -153,7 +152,7 @@ export default {
 							else{
 								this.rows[x].push({
 									count: count,
-									color: cell
+									color: lastColor
 								});
 
 								count = 0
@@ -167,9 +166,6 @@ export default {
 							count: count,
 							color: lastColor
 						});
-						
-						console.log("cell", cell)
-
 						count = 0
 						lastColor = null
 					}
@@ -212,7 +208,7 @@ export default {
 							else{
 								this.columns[x].push({
 									count: count,
-									color: cell
+									color: lastColor
 								});
 
 								count = 0
