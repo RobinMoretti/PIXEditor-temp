@@ -82,6 +82,16 @@
 				<button 
 					v-on:click="exportPageToJpg(false)">EXPORT Solution TO JPG</button>		
 			</div>
+			<!-- <div class="input-group">
+				<button 
+					v-on:click="togglePrintable">toggle printable</button>	
+
+				<span>{{ selectedPage.printable }}</span>	
+				<br>
+				<button 
+					v-on:click="togglePlayable">togglePlayable</button>		
+				<span>{{ selectedPage.playable }}</span>	
+			</div> -->
 			<div class="input-group">
 				<button 
 					v-on:click="deleteSelectedPage">DELETE PAGE</button>		
@@ -126,35 +136,48 @@ export default {
 		},
 	},
 	methods: {
+		togglePrintable: function(){
+			this.$store.dispatch('page/togglePrintable')
+		},
+		togglePlayable: function(){
+			this.$store.dispatch('page/togglePlayable')
+		},
 		exportPageToJpg: function(version){
 			if(version){
-				this.$store.commit('grid/togglePrintable', true)
-				this.$store.commit('grid/toggleGamable', true)
+				this.$store.dispatch('page/togglePrintable', true)
+				this.$store.dispatch('page/togglePlayable', true)
 
-				htmlToImage.toPng(document.querySelector(".page"))
-					.then(function (dataUrl) {
-						var image = new Image();
-						image.src = dataUrl;
+				this.$nextTick(() => {
+					htmlToImage.toPng(document.querySelector(".page"))
+						.then(function (dataUrl) {
+							var image = new Image();
+							image.src = dataUrl;
 
-						var w = window.open("");
-						w.document.write(image.outerHTML);
-					});
+							var w = window.open("");
+							w.document.write(image.outerHTML);
+						})
+						.then(() => {
+							this.$store.dispatch('page/togglePrintable', false)
+							this.$store.dispatch('page/togglePlayable', false)
+						});
+				})
 
-				this.$store.commit('grid/togglePrintable', false)
-				this.$store.commit('grid/toggleGamable', false)
 			}else{
-				this.$store.commit('grid/togglePrintable', true)
+				this.$store.dispatch('page/togglePrintable', true)
 
-				htmlToImage.toPng(document.querySelector(".page"))
-					.then(function (dataUrl) {
-						var image = new Image();
-						image.src = dataUrl;
+				this.$nextTick(() => {
+					htmlToImage.toPng(document.querySelector(".page"))
+						.then(function (dataUrl) {
+							var image = new Image();
+							image.src = dataUrl;
 
-						var w = window.open("");
-						w.document.write(image.outerHTML);
-					});
-					
-				this.$store.commit('grid/togglePrintable', false)
+							var w = window.open("");
+							w.document.write(image.outerHTML);
+						})
+						.then(() => {
+							this.$store.dispatch('page/togglePrintable', false)
+						});
+				})
 			}
 		},
 		deleteGrid: function (gridId) {

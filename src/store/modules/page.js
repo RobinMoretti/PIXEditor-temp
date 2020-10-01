@@ -16,9 +16,10 @@ const getters = {
 	allPages: function(state, getters){
 		return getters["book"].pages
 	},
-	activePage: function(state, getters, rootState){
-		var pages = getters["allPages"];
-		return pages[rootState.selectedPage];
+	activePage: function(state, getters, rootState, rootGetters){
+		var selectedPage = rootGetters["book/selectedPageObj"];
+		console.log("selectedPage", selectedPage)
+		return selectedPage;
 	},
 	activePageIndex: function(state, getters, rootState){
 		return rootState.selectedPage;
@@ -27,11 +28,28 @@ const getters = {
 
 // actions
 const actions = {
-	togglePrintable: function({getters}, toggleValue){
-		commit('changePageProperty', {page: getters['activePage'], value: toggleValue, property: 'printable'})
+	togglePrintable: function({getters, commit}, toggleValue = null){
+		var value = null
+
+		if(toggleValue != null){
+			value = toggleValue
+		}
+		else{
+			value = !getters['activePage'].printable
+		}
+
+		commit('changePageProperty', {page: getters['activePage'], value: value, property: 'printable'})
 	},
-	togglePlayable: function({getters}, toggleValue){
-		commit('changePageProperty', {page: getters['activePage'], value: toggleValue, property: 'playable'})
+	togglePlayable: function({getters, commit}, toggleValue = null){
+		var value = null
+
+		if(toggleValue != null){
+			value = toggleValue
+		}
+		else{
+			value = !getters['activePage'].playable
+		}
+		commit('changePageProperty', {page: getters['activePage'], value: value, property: 'playable'})
 	},
 	newPage: function({state, commit, getters}){
 		var book = getters["book"]
@@ -96,7 +114,6 @@ const mutations = {
 		for (let index = 0; index < properties.length-1; index++) {
 			pageParentProperty = pageParentProperty[properties[index]];
 		}
-
 		Vue.set(pageParentProperty, properties[properties.length-1], payload.value)
 	},
 	addToPages:  function(state, payload){

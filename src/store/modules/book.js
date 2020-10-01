@@ -119,7 +119,6 @@ const actions = {
 			commit('updateMousePostion', {x: payload.event.clientX, y: payload.event.clientY}, {root: true})
 
 		commit('toggleMouseTracker', null, { root: true })
-
 		
 		Vue.nextTick(() => {
 			commit('toggleGrabbingOnGrid', payload.gridIndex)

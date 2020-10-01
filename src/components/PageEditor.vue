@@ -1,6 +1,6 @@
 <template>
 	<div class="page-editor " :style="bgGridCssVariables">
-		<div class="page to-print" v-if="selectedPage">
+		<div class="page" v-if="selectedPage">
 			<div 
 				class="background-grid" 
 				v-if="selectedPage.background.visible">
@@ -18,7 +18,6 @@
 				:grid="grid"
 				:grid-id="key"
 				:cell-size="selectedPage.cellSize"
-				class="to-print"
 				:key="'grid-'+key">
 			</Grid>
 		</div>

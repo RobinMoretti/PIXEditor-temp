@@ -11,7 +11,8 @@
 		<div 
 			class="column-count-container" 
 			:class="{ bottom: cellCountersPosition.y == 'bottom'}"
-			:style="{ opacity: cellCounters.opacity }">
+			:style="{ opacity: cellCounters.opacity }"
+			v-if="(parentPage.playable == true && parentPage.printable == false) || (parentPage.printable == false && parentPage.playable == false) || (parentPage.printable && parentPage.playable)">
 			<div 
 				class="cells-count"
 				v-for="(column, key) in columns"
@@ -28,7 +29,8 @@
 		<div 
 			class="row-count-container" 
 			:class="{ right: cellCountersPosition.x == 'right'}"
-			:style="{ opacity: cellCounters.opacity }">
+			:style="{ opacity: cellCounters.opacity }"
+			v-if="(parentPage.playable == true && parentPage.printable == false) || (parentPage.printable == false && parentPage.playable == false) || (parentPage.printable && parentPage.playable)">
 			<div 
 				class="cells-count-container"
 				v-for="(row, key) in rows"
@@ -61,9 +63,10 @@
 				>
 				{{cells[key]}}
 			</div>
+
 		</div>
 
-		<div class="grid-options" v-if="grid.editable">
+		<div class="grid-options" v-if="grid.editable && parentPage.playable == false && parentPage.printable == false">
 			<b v-on:click="toggleGrabbing(gridId, $event)" class="option">Grab</b>
 		</div>
 	</div>
@@ -99,8 +102,11 @@ export default {
 	methods: {
 		cellBackgroundColor: function(key){
 			var backgroundColor = null
-
-			if(this.cells[key] != null)
+			
+			if(this.parentPage.playable){
+				backgroundColor = this.grid.backgroundColor.style
+			}
+			else if(this.cells[key] != null)
 				backgroundColor = this.cells[key]
 			else {
 				// console.log("this.grid.backgroundColor.style", this.grid.backgroundColor)
@@ -245,6 +251,9 @@ export default {
 		}
 	},
 	computed: {
+		parentPage: function(){
+			return this.$store.getters['page/activePage'];
+		},
 		initGridPos: function(){
 			return this.$store.state.book.initGridPos;
 		},
