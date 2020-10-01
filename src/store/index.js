@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 import book from './modules/book'
 import layer from './modules/layer'
+import page from './modules/page'
 import grid from './modules/grid'
 import tool from './modules/tool'
 
@@ -19,7 +20,8 @@ export default new Vuex.Store({
 		book,
 		layer,
 		grid,
-		tool
+		tool,
+		page
 	},
 	strict: debug,
 	state:{
@@ -27,6 +29,7 @@ export default new Vuex.Store({
 			x: 0,
 			y:0
 		},
+		updateMousePos: false,
 		displayCanvas: false,
 	},
 	actions: {
@@ -34,6 +37,12 @@ export default new Vuex.Store({
 	mutations: {
 		updateMousePostion: function(state, position){
 			state.mousePosition = position;
+		},
+		toggleMouseTracker: function(state, value = null){
+			if(value != null)
+				state.updateMousePos = value;
+			else
+				state.updateMousePos = !state.updateMousePos;
 		},
 	},
 	plugins: [createPersistedState()]

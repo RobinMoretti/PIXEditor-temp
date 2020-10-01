@@ -60,8 +60,8 @@ export default {
 			this.$store.commit('book/updateTitle', value)
 		},
 		addNewPage: function(){
-			this.$store.commit('book/newPage')
-			this.$store.commit('book/selectPage', this.$store.state.book.pages.length - 1)
+			this.$store.dispatch('page/newPage')
+			this.$store.dispatch('page/selectPage', this.$store.state.book.pages.length - 1)
 		}
 	},
 }

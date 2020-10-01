@@ -1,4 +1,4 @@
-// import Vue from 'vue'
+import Vue from 'vue'
 import store from './../../store'
 import helpers from './../../helpers'
 
@@ -7,8 +7,8 @@ import helpers from './../../helpers'
 // initial state
 const state = {
 	title: "My book",
-	width: 21.0,
-	height: 29.7,
+	width: 25,
+	height: 25,
 	selectedPage: 0,
 	pages: [
 	],
@@ -114,11 +114,17 @@ const getters = {
 
 // actions
 const actions = {
-	// init: ({dispatch, commit})=>{
-	// }
-	toggleGrabbingOnGrid: function({rootState, commit}, gridIndex){
-		commit('toggleGrabbingOnGrid', gridIndex)
-		commit('initDragPos', rootState.mousePosition)
+	toggleGrabbingOnGrid: function({rootState, commit}, payload){
+		if(payload.event != null)
+			commit('updateMousePostion', {x: payload.event.clientX, y: payload.event.clientY}, {root: true})
+
+		commit('toggleMouseTracker', null, { root: true })
+
+		
+		Vue.nextTick(() => {
+			commit('toggleGrabbingOnGrid', payload.gridIndex)
+			commit('initDragPos', rootState.mousePosition)
+		})
 	},
 }
 
@@ -144,54 +150,6 @@ const mutations = {
 	},
 	updateTitle: function(state, value){
 		state.title = value;
-	},
-	newPage: function(state){
-		var grid = helpers.cloneVar(state.defaultGrid);
-		grid.editable = true
-
-		var cellsLenght = grid.width * grid.height;
-
-		for (let index = 0; index < cellsLenght; index++) {
-			grid.cells.push(0);	
-		}
-
-		var page = {
-			background: {
-				grid:[],
-				visible: false,
-				editable: false,
-				backgroundColor: {
-					red: 255,
-					green: 255,
-					blue: 255,
-					alpha: 1
-				},
-				border: {
-					visible: false,
-					color: {
-						red: 255,
-						green: 255,
-						blue: 255,
-						alpha: 1
-					},
-				}
-			},
-			cellSize: 1,
-			grids: [
-				grid
-			]
-		}
-
-		var backgroundGridLength = (state.width * state.height) / page.cellSize;
-
-		for (let index = 0; index < backgroundGridLength; index++) {
-			page.background.grid.push(0);	
-		}
-		
-		state.pages.push(page)
-	},
-	selectPage: function(state, pageId){
-		state.selectedPage = pageId;
 	},
 	updateActivePageCellSize: function(state, value){
 		var selectedPage = state.pages[state.selectedPage];
@@ -228,11 +186,10 @@ const mutations = {
 		//snap width and height to page cell size
 		var backgroundGridLength = Math.ceil((snapTo(state.width) * snapTo(state.height)) / (selectedPage.cellSize * selectedPage.cellSize))
 
+		console.log("backgroundGridLength", backgroundGridLength) 
+		console.log("selectedPage.background.grid", selectedPage.background.grid) 
+
 		var count = 0;
-
-		console.log("selectedPage.background.grid.length", selectedPage.background.grid.length)
-
-		console.log("backgroundGridLength", backgroundGridLength)
 
 		if(selectedPage.background.grid.length > backgroundGridLength){
 			count = selectedPage.background.grid.length - backgroundGridLength;

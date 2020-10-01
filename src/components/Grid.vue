@@ -64,7 +64,7 @@
 		</div>
 
 		<div class="grid-options" v-if="grid.editable">
-			<b v-on:click="toggleGrabbing(gridId)" class="option">Grab</b>
+			<b v-on:click="toggleGrabbing(gridId, $event)" class="option">Grab</b>
 		</div>
 	</div>
 </template>
@@ -112,8 +112,8 @@ export default {
 			
 			return backgroundColor
 		}, 
-		toggleGrabbing: function(gridIndex){
-			this.$store.dispatch('book/toggleGrabbingOnGrid', gridIndex )
+		toggleGrabbing: function(gridIndex, event){
+			this.$store.dispatch('book/toggleGrabbingOnGrid', { gridIndex: gridIndex, event: event} )
 		},
 		toggleCell: function(key){
 			if(this.grid.editable){
@@ -289,8 +289,8 @@ export default {
 		},
 		cellsContainerCss: function(){
 			return {
-				'width': (this.cellSize * this.width + 0.01 + (this.gridBorderWidth * 0.026458333)) + "cm",
-				'height': ((this.cellSize * this.height) + 0.01 + (this.gridBorderWidth * 0.026458333)) + "cm",
+				'width': (this.cellSize * this.width + (this.gridBorderWidth * 0.026458333)) + "cm",
+				'height': ((this.cellSize * this.height) + (this.gridBorderWidth * 0.026458333)) + "cm",
 			}
 		},
 		cells: function(){
@@ -335,8 +335,8 @@ export default {
 	.click-ctrl{
 		cursor: grab;
 		position: absolute;
-		left: 0; top: 0;
-		width: 100vw; height: 100vh;
+		left: -150vw; top: -150vh;
+		width: 300vw; height: 300vh;
 		// background: red;
 		// border: solid grey 1px;
 		z-index: 10;
@@ -472,6 +472,10 @@ export default {
 			.cell:nth-child(5n){
 				border-right: 2px solid black;
 			}
+		}
+
+		&.to-print{
+			
 		}
 	}
 	

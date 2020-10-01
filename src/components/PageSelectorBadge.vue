@@ -26,7 +26,8 @@ export default {
 	},
 	methods: {
 		selectPage: function(){
-			return this.$store.commit('book/selectPage', this.id);
+			console.log('selectPage')
+			return this.$store.dispatch('page/selectPage', this.id);
 		}
 	},
 	mounted () {

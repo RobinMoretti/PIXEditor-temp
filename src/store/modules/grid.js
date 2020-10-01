@@ -96,7 +96,7 @@ const mutations = {
 		}
 		else
 			Vue.set(payload.grid, payload.cellId, payload.toolActiveColor.style);
-	}
+	},
 }
 
 export default {

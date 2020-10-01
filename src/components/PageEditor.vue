@@ -1,6 +1,6 @@
 <template>
-	<div class="page-editor" :style="bgGridCssVariables">
-		<div class="page" v-if="selectedPage">
+	<div class="page-editor " :style="bgGridCssVariables">
+		<div class="page to-print" v-if="selectedPage">
 			<div 
 				class="background-grid" 
 				v-if="selectedPage.background.visible">
@@ -8,6 +8,7 @@
 					class="cell"
 					v-for="(cell, key) in selectedPage.background.grid"
 					:key="'bgcell-' + key"
+					:id="'bgcell-' + key"
 					:style="{ background: cell }"
 					v-on:click="toggleBgGridCell(key)"></div>
 			</div>
@@ -17,11 +18,12 @@
 				:grid="grid"
 				:grid-id="key"
 				:cell-size="selectedPage.cellSize"
+				class="to-print"
 				:key="'grid-'+key">
 			</Grid>
 		</div>
 
-		<div class="panel">
+		<div class="panel" v-if="selectedPage">
 			<ToolSetting></ToolSetting>
 			<PageSetting  v-if="selectedPage"></PageSetting>
 			<LayerEditor  v-if="selectedPage && selectedPageHaveEditableLayer"></LayerEditor>
@@ -67,20 +69,23 @@ export default {
 				return 8
 		},
 		bgGridCssVariables: function(){
-			return {
-				'--bg-grid-cellsize': this.cellSize + 'cm',
-				'--bg-grid-background-color': this.selectedPage.background.backgroundColor.style,
-				'--bg-grid-border-color':  this.selectedPage.background.border.visible ? this.selectedPage.background.border.color.style : 'rgba(0,0,0,0)',
-				'--bg-grid-border-width':  (this.selectedPage.background.border.visible ? this.selectedPage.background.border.width : 0) + 'px'
+			if(this.selectedPage){
+				return {
+					'--bg-grid-cellsize': this.cellSize + 'cm',
+					'--bg-grid-background-color': this.selectedPage.background.backgroundColor.style,
+					'--bg-grid-border-color':  this.selectedPage.background.border.visible ? this.selectedPage.background.border.color.style : 'rgba(0,0,0,0)',
+					'--bg-grid-border-width':  (this.selectedPage.background.border.visible ? this.selectedPage.background.border.width : 0) + 'px'
+				}
+			}
+			else{
+				return {}
 			}
 		},
 	},
 	methods: {
 		toggleBgGridCell: function(key){
-			console.log('selectedPage.background.grid.editable', this.selectedPage.background.editable)
 			if(this.selectedPage.background.editable){
 				this.$store.dispatch('grid/clickedActiveGridCell', { cellId: key } )
-				// this.updateRowsAndColumnsCount();	
 			}	
 		}
 	},
@@ -110,10 +115,14 @@ export default {
 			border: solid var(--cell-size) black;
 			// box-sizing: border-box;
 			display: inline-block;
-			width: 21cm;
-			height: 29.7cm;
+			width: 25cm;
+			height: 25cm;
 			flex-shrink: 0;
 			overflow: hidden;
+
+			&.to-print{
+				border: none;
+			}
 		}
 
 		.panel{

@@ -5,6 +5,7 @@
 			<router-link to="/">Home</router-link> |
 			<router-link to="/about">About</router-link>
 		</div> -->
+		{{updateMousePos}}
 		<router-view/>
 	</div>
 </template>
@@ -18,10 +19,14 @@ export default {
 		mousePosition: function(){
 			return this.$store.state.mousePosition
 		}, 
+		updateMousePos: function(){
+			return this.$store.state.updateMousePos
+		}
 	},
 	methods: {
 		updateMousePosition: function(event){
-			this.$store.commit("updateMousePostion", {x: event.clientX, y: event.clientY })
+			if(this.$store.state.updateMousePos)
+				this.$store.commit("updateMousePostion", {x: event.clientX, y: event.clientY })
 		}
 	},
 	data () {

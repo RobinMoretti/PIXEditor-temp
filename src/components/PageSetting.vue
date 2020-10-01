@@ -67,7 +67,6 @@
 					</div>
 					<div 
 						class="layer layer-ctrl">
-
 						<div class="options">
 							<div class="plus" v-on:click="addNewGrid">
 								<img src="/images/add-icon.png" :width="3*8 + 'px'" style="margin-left: 8px" >
@@ -79,6 +78,12 @@
 
 			<div class="input-group">
 				<button 
+					v-on:click="exportPageToJpg(true)">EXPORT Game TO JPG</button>		
+				<button 
+					v-on:click="exportPageToJpg(false)">EXPORT Solution TO JPG</button>		
+			</div>
+			<div class="input-group">
+				<button 
 					v-on:click="deleteSelectedPage">DELETE PAGE</button>		
 			</div>
 			
@@ -87,6 +92,8 @@
 </template>
 
 <script>
+
+import htmlToImage from 'html-to-image';
 
 export default {
 	components: {
@@ -119,6 +126,37 @@ export default {
 		},
 	},
 	methods: {
+		exportPageToJpg: function(version){
+			if(version){
+				this.$store.commit('grid/togglePrintable', true)
+				this.$store.commit('grid/toggleGamable', true)
+
+				htmlToImage.toPng(document.querySelector(".page"))
+					.then(function (dataUrl) {
+						var image = new Image();
+						image.src = dataUrl;
+
+						var w = window.open("");
+						w.document.write(image.outerHTML);
+					});
+
+				this.$store.commit('grid/togglePrintable', false)
+				this.$store.commit('grid/toggleGamable', false)
+			}else{
+				this.$store.commit('grid/togglePrintable', true)
+
+				htmlToImage.toPng(document.querySelector(".page"))
+					.then(function (dataUrl) {
+						var image = new Image();
+						image.src = dataUrl;
+
+						var w = window.open("");
+						w.document.write(image.outerHTML);
+					});
+					
+				this.$store.commit('grid/togglePrintable', false)
+			}
+		},
 		deleteGrid: function (gridId) {
 			this.$store.commit('book/deleteGridOnSelectedPage', gridId)
 		},
