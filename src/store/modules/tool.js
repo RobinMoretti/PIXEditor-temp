@@ -8,10 +8,14 @@
 const state = {
 	activeTool: "brush",
 	activeColor: {
-		red: 0,
-		green: 0,
+		alpha: 1,
 		blue: 0,
-		alpha: 1
+		green: 0,
+		hue: 0,
+		red: 0,
+		saturation: 0,
+		style: "rgba(0, 0, 0, 1)",
+		value: 0
 	},
 	availableTool: {
 		brush: {

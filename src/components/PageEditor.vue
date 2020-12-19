@@ -49,7 +49,6 @@ export default {
 		},
 		grids: function(){
 			return this.selectedPage.grids.filter( grid => {
-				console.log("grid.visibility", grid.visibility)
 				return grid.visibility
 			})
 		},

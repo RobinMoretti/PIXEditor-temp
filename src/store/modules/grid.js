@@ -69,17 +69,14 @@ const actions = {
 			y: 0
 		}
 
-		if(payload.state == "height"){
-			payload.size.x = payload.value
+		if(payload.state == "width"){
+			payload.size.x = Number(payload.value)
 			payload.size.y = payload.grid.height
 		}
 		else{
 			payload.size.x = payload.grid.width
-			payload.size.y = payload.value
+			payload.size.y = Number(payload.value)
 		}
-
-
-
 		commit("setLayerSize", payload)
 	},
 }

@@ -273,6 +273,8 @@ export default {
 			return {
 				'--grid-cellsize': this.cellSizeInCm,
 				'--grid-left': (this.gridPosition.x) + 'cm',
+				'--grid-width': this.width,
+				'--grid-height': this.height,
 				'--grid-top': (this.gridPosition.y) + 'cm',
 				'--grid-bg-color': this.grid.backgroundColor.style,
 				'--grid-border-width': this.gridBorderWidth + 'px',
@@ -442,15 +444,9 @@ export default {
 		}
 		
 		.cells-container{
-			// background: var(--grid-bg-color);
-			display: flex;
-			flex-wrap: wrap;
-			// border-top: solid black 2px;
-			// border-left: solid black 2px;
-			border-top: solid var(--grid-border-color) var(--grid-border-width);
-			border-left: solid var(--grid-border-color) var(--grid-border-width);
-			// border-right: unset; border-bottom: unset; border-left: unset;
-			// box-sizing: border-box;
+			display: grid;
+			grid-template-columns: repeat(var(--grid-width), var(--grid-cellsize));
+			grid-template-rows: repeat(var(--grid-height), var(--grid-cellsize));
 
 			.cell{  
 				cursor: pointer;
