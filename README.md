@@ -1,8 +1,19 @@
-# picrosseditorvue
+# Picross Maker
+
+Make book, added some picross, print it. 
+
+
+## Roadmap 
+* add better color picker
+* change 
+* add some tools 
+
+### Made with:
+* VueJs
 
 ## Project setup
 ```
-pnpm install
+npm install
 ```
 
 ### Compiles and hot-reloads for development
@@ -19,6 +30,3 @@ pnpm run build
 ```
 pnpm run lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

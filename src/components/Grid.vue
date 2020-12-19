@@ -447,6 +447,8 @@ export default {
 			display: grid;
 			grid-template-columns: repeat(var(--grid-width), var(--grid-cellsize));
 			grid-template-rows: repeat(var(--grid-height), var(--grid-cellsize));
+			border-top: solid var(--grid-border-color) var(--grid-border-width);
+			border-left: solid var(--grid-border-color) var(--grid-border-width);
 
 			.cell{  
 				cursor: pointer;
