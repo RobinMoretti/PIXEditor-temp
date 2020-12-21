@@ -1,5 +1,13 @@
 <template>
 	<div class="page-editor " :style="bgGridCssVariables">
+		<div>
+			<div :key="page.id" v-for="page in getGridsModel">
+				<h1>page id:{{ page.id }}</h1>
+				<h1>page id:{{ page.x }}</h1>
+				<h1>page id:{{ page.page.id }}</h1>
+				<!-- <h1>grid:{{ page.grid.x }}</h1> -->
+			</div>
+		</div>
 		<div class="page" v-if="selectedPage">
 			<div 
 				class="background-grid" 
@@ -36,6 +44,8 @@ import PageSetting from '../components/PageSetting.vue'
 import LayerEditor from '../components/LayerEditor.vue'
 import ToolSetting from '../components/ToolSetting.vue'
 
+import GridsModel from '@/store/models/grid'
+
 export default {
 	components: {
 		Grid,
@@ -44,6 +54,9 @@ export default {
 		ToolSetting
 	},
 	computed: {
+		getGridsModel: function(){
+			return GridsModel.query().with('page').get()
+		},
 		selectedPageHaveEditableLayer: function(){
 			return this.$store.getters['book/selectedPageHaveEditableLayer']
 		},
@@ -96,6 +109,7 @@ export default {
 	props: {
 	},
 	mounted () {
+
 	},
 }
 </script>

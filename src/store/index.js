@@ -7,15 +7,33 @@ import page from './modules/page'
 import grid from './modules/grid'
 import tool from './modules/tool'
 
-// import EventBus from './event-bus';
+
+import VuexORM from '@vuex-orm/core'
+// import VuexORMLocalForage from 'vuex-orm-localforage'
+import Grid from './models/grid'
+import Page from './models/page'
 
 const debug = process.env.NODE_ENV !== 'production'
 
-import createPersistedState from "vuex-persistedstate";
+import VuexPersistence from 'vuex-persist'
 
 Vue.use(Vuex)
 
+const database = new VuexORM.Database()
+
+database.register(Grid)
+database.register(Page)
+
+// VuexORM.use(VuexORMLocalForage, {
+// 	database
+// })
+
+const vuexLocal = new VuexPersistence({
+	storage: window.localStorage
+})
+
 export default new Vuex.Store({
+	namespace: true,
 	modules: {
 		book,
 		layer,
@@ -45,8 +63,12 @@ export default new Vuex.Store({
 				state.updateMousePos = !state.updateMousePos;
 		},
 	},
-	plugins: [createPersistedState()]
+	plugins: [
+		VuexORM.install(database),
+		vuexLocal.plugin, 
+	]
 })
+
 
 
 
