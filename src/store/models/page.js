@@ -1,4 +1,5 @@
 import { Model } from '@vuex-orm/core'
+import Grid from './grid'
 
 export default class Page extends Model {
   static entity = 'pages'
@@ -7,6 +8,7 @@ export default class Page extends Model {
     return {
       id: this.attr(null),
       title: this.attr(null),
+      grids: this.hasMany(Grid, 'page_id'),
     }
   }
 }

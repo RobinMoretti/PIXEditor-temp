@@ -27,10 +27,19 @@ Vue.component('InputEditor', InputEditor)
 Vue.component('ImgToggler', ImgToggler)
 Vue.component('ColorPickerToggler', ColorPickerToggler)
 
+Vue.mixin({
+  methods: {
+    resetVuex: function(){
+      console.log('resetStorage')
+      window.localStorage.removeItem('vuex');
+      document.location.reload();
+    }
+  }
+})
+
 new Vue({
   store,
   router,
   render: h => h(App)
 }).$mount('#app')
-
 

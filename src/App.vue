@@ -5,8 +5,10 @@
 			<router-link to="/">Home</router-link> |
 			<router-link to="/about">About</router-link>
 		</div> -->
-		{{updateMousePos}}
+		
 		<router-view/>
+
+		<button v-on:click="resetVuex">X reset vuex</button>
 	</div>
 </template>
 
